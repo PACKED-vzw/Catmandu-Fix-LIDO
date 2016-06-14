@@ -1,18 +1,20 @@
-package Catmandu::Fix::lido_title_dev;
+package Catmandu::Fix::lido_title;
 
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Digest::MD5;
 
 use strict;
 
 #https://librecatproject.wordpress.com/2014/03/26/create-a-fixer-part-2/
 
+# TODO: add support for xml:lang
+
 with 'Catmandu::Fix::Base';
 
 has value  => ( fix_arg => 1 );
 has source => ( fix_arg => 1 );
+has lang => ( fix_opt => 1, default => sub { 'en' } );
 
 
 sub emit {
@@ -27,9 +29,12 @@ sub emit {
 		'$append'
 	];
 	my $perl = '';
+	# $h = the variable that holds the titleSet (it is a hash)
+	# titleSet.appellationValue & titleSet.sourceAppellation
 	my $h = $fixer->generate_var();
 	$perl .= "my ${h} = {};";
 	
+	# appellationValue from value
 	$perl .= $fixer->emit_walk_path(
 		$fixer->var,
 		$value_path,
@@ -46,6 +51,7 @@ sub emit {
 		}
 	);
 	
+	# sourceAppellation from source
 	$perl .= $fixer->emit_walk_path(
 		$fixer->var,
 		$source_path,
@@ -62,6 +68,8 @@ sub emit {
 		}
 	);
 	
+	# Add the new path (LIDO) to the document.
+	# The titleSet is appended ($append) to new_path
 	$perl .= $fixer->emit_create_path(
 		$fixer->var,
 		$new_path,

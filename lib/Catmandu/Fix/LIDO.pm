@@ -7,7 +7,7 @@ use parent 'Exporter';
 our @EXPORT;
 @EXPORT = qw(
     lido_title
-    lido_title_dev
+    lido_repository
 );
 
 foreach my $fix (@EXPORT) {
