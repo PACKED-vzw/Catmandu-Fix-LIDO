@@ -10,6 +10,7 @@ our @EXPORT;
     lido_repository
     lido_recid
     lido_worktype
+    lido_description
 );
 
 foreach my $fix (@EXPORT) {

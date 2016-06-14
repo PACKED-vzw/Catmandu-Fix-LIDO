@@ -6,7 +6,7 @@ Support for the minimal requirements of [CIDOC-CRM](https://www.projectcest.be/w
 * inventory number -> `lido_recid(rec_id)`
 * object key word -> `lido_worktype(work_type)`
 * title -> `lido_title(title, source)`
-* brief description
+* brief description -> `lido_description(description)`
 * acquisition method
 * acquired from
 * acquisition date
