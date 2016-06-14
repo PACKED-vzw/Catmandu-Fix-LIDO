@@ -8,6 +8,7 @@ our @EXPORT;
 @EXPORT = qw(
     lido_title
     lido_repository
+    lido_recid
 );
 
 foreach my $fix (@EXPORT) {
