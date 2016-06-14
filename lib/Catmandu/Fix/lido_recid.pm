@@ -3,6 +3,7 @@ package Catmandu::Fix::lido_recid;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
+use Catmandu::Fix::LIDO_Utility qw(walk);
 
 use strict;
 
@@ -24,21 +25,7 @@ sub emit {
 	my $perl = '';
 	$perl .= "my ${h};";
 	
-	$perl .= $fixer->emit_walk_path(
-		$fixer->var,
-		$recid_path,
-		sub {
-			my $recid_var = shift;
-			$fixer->emit_get_key (
-				$recid_var,
-				$recid_key,
-				sub {
-					my $recid_val = shift;
-					"${h} = ${recid_val};";
-				}
-			);
-		}
-	);
+	$perl .= walk($fixer, $recid_path, $recid_key, $h);
 	
 	$perl .= $fixer->emit_create_path(
 		$fixer->var,

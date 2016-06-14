@@ -4,7 +4,7 @@ Support for the minimal requirements of [CIDOC-CRM](https://www.projectcest.be/w
 
 * institution name -> `lido_repository(institution_name, work_id)`
 * inventory number -> `lido_recid(rec_id)`
-* object key word
+* object key word -> `lido_worktype(work_type)`
 * title -> `lido_title(title, source)`
 * brief description
 * acquisition method

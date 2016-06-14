@@ -3,6 +3,7 @@ package Catmandu::Fix::lido_title;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
+use Catmandu::Fix::LIDO_Utility qw(walk);
 
 use strict;
 
@@ -32,41 +33,19 @@ sub emit {
 	# $h = the variable that holds the titleSet (it is a hash)
 	# titleSet.appellationValue & titleSet.sourceAppellation
 	my $h = $fixer->generate_var();
-	$perl .= "my ${h} = {};";
+	my $appellationValue = $fixer->generate_var();
+	my $sourceAppellation = $fixer->generate_var();
+	# They must be declared in $perl beforehand. The value
+	# of $appellationValue is something like $__1 etc.
+	$perl .= "my ${h} = {};"
+	."my ${appellationValue};"
+	."my ${sourceAppellation};";
 	
 	# appellationValue from value
-	$perl .= $fixer->emit_walk_path(
-		$fixer->var,
-		$value_path,
-		sub {
-			my $value_var = shift;
-			$fixer->emit_get_key(
-				$value_var,
-				$value_key,
-				sub {
-					my $value_val = shift;
-					"${h}->{'appellationValue'} = ${value_val};";
-				}
-			);
-		}
-	);
+	$perl .= walk($fixer, $value_path, $value_key, $appellationValue);
 	
 	# sourceAppellation from source
-	$perl .= $fixer->emit_walk_path(
-		$fixer->var,
-		$source_path,
-		sub {
-			my $source_var = shift;
-			$fixer->emit_get_key(
-				$source_var,
-				$source_key,
-				sub {
-					my $source_val = shift;
-					"${h}->{'sourceAppellation'} = ${source_val};";
-				}
-			);
-		}
-	);
+	$perl .= walk($fixer, $source_path, $source_key, $sourceAppellation);
 	
 	# Add the new path (LIDO) to the document.
 	# The titleSet is appended ($append) to new_path
@@ -80,7 +59,11 @@ sub emit {
 				['titleSet'],
 				sub {
 					my $path_var = shift;
-					"${path_var} = ${h};";
+					"${h} = {"
+						."'appellationValue' => ${appellationValue},"
+						."'sourceAppellation' => ${sourceAppellation}"
+						."};"
+					."${path_var} = ${h};";
 				}
 			);
 		}

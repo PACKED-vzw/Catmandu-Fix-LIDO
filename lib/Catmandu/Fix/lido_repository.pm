@@ -3,6 +3,7 @@ package Catmandu::Fix::lido_repository;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
+use Catmandu::Fix::LIDO_Utility qw(walk);
 
 use strict;
 
@@ -12,61 +13,36 @@ use strict;
 
 with 'Catmandu::Fix::Base';
 
-has name => ( fix_arg => 1 );
+has name   => ( fix_arg => 1 );
 has workid => ( fix_arg => 1 );
 
 sub emit {
-	my ($self, $fixer) = @_;
-	my $name_path = $fixer->split_path($self->name);
-	my $name_key = pop @$name_path;
-	my $workid_path = $fixer->split_path($self->workid);
-	my $workid_key = pop @$workid_path;
-	
-	my $new_path = ['lido', 'descriptiveMetadata', 'objectIdentificationWrap', 'repositoryWrap', '$append'];
-	
-	my $perl = '';
-	my $h = $fixer->generate_var();
-	$perl .= "my ${h} = {};";
-	
+	my ( $self, $fixer ) = @_;
+	my $name_path   = $fixer->split_path( $self->name );
+	my $name_key    = pop @$name_path;
+	my $workid_path = $fixer->split_path( $self->workid );
+	my $workid_key  = pop @$workid_path;
+
+	my $new_path = [
+		'lido',                     'descriptiveMetadata',
+		'objectIdentificationWrap', 'repositoryWrap',
+		'$append'
+	];
+
+	my $perl           = '';
+	my $h              = $fixer->generate_var();
+	my $repositoryName = $fixer->generate_var();
+	my $workID         = $fixer->generate_var();
+	$perl .= "my ${h} = {};"
+	."my ${repositoryName};"
+	."my ${workID};";
+
 	# repositoryName from name
-	$perl .= $fixer->emit_walk_path(
-		$fixer->var,
-		$name_path,
-		sub {
-			my $name_var = shift;
-			$fixer->emit_get_key(
-				$name_var,
-				$name_key,
-				sub {
-					my $name_val = shift;
-					#legalBodyName.appellationValue
-					"${h}->{'repositoryName'} = {"
-						."'legalBodyName' => {"
-							."'appellationValue' => ${name_val}"
-							."}"
-						."};";
-				}
-			);
-		}
-	);
-	
+	$perl .= walk( $fixer, $name_path, $name_key, $repositoryName );
+
 	# workID from workid
-	$perl .= $fixer->emit_walk_path(
-		$fixer->var,
-		$workid_path,
-		sub {
-			my $workid_var = shift;
-			$fixer->emit_get_key(
-				$workid_var,
-				$workid_key,
-				sub {
-					my $workid_val = shift;
-					"${h}->{'workID'} = ${workid_val};";
-				}
-			);
-		}
-	);
-	
+	$perl .= walk( $fixer, $workid_path, $workid_key, $workID );
+
 	# Append the repositorySet ($append)
 	$perl .= $fixer->emit_create_path(
 		$fixer->var,
@@ -78,7 +54,13 @@ sub emit {
 				['repositorySet'],
 				sub {
 					my $path_var = shift;
-					"${path_var} = ${h};";
+					"${h}->{'repositoryName'} = {"
+					  . "'legalBodyName' => {"
+					  	. "'appellationValue' => ${repositoryName}" 
+					  	. "}" 
+					  . "};"
+					  . "${h}->{'workID'} = ${workID};"
+					  . "${path_var} = ${h};";
 				}
 			);
 		}
