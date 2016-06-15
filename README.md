@@ -10,7 +10,9 @@ Support for the minimal requirements of [CIDOC-CRM](https://www.projectcest.be/w
 * acquisition method
 * acquired from
 * acquisition date
-> ```
+
+> 
+```
 lido_event(
 	type: string (mandatory),
 	id: path (optional),
@@ -22,4 +24,5 @@ lido_event(
 	date_iso: string (optional)
 )
 ```
+
 * permanent location
