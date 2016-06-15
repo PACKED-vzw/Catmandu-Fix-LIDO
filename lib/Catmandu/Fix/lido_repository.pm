@@ -3,7 +3,7 @@ package Catmandu::Fix::lido_repository;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Catmandu::Fix::LIDO_Utility qw(walk);
+use Catmandu::Fix::LIDO::Utility qw(walk path_and_key);
 
 use strict;
 
@@ -18,8 +18,7 @@ has workid => ( fix_arg => 1 );
 
 sub emit {
 	my ( $self, $fixer ) = @_;
-	my $name_path   = $fixer->split_path( $self->name );
-	my $name_key    = pop @$name_path;
+	my ($name_path, $name_key) = path_and_key($fixer, $self->name);
 	my $workid_path = $fixer->split_path( $self->workid );
 	my $workid_key  = pop @$workid_path;
 

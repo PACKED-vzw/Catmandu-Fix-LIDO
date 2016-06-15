@@ -10,4 +10,16 @@ Support for the minimal requirements of [CIDOC-CRM](https://www.projectcest.be/w
 * acquisition method
 * acquired from
 * acquisition date
+> ```
+lido_event(
+	type: string (mandatory),
+	id: path (optional),
+	name: path (optional),
+	actor_name: path (optional, but required if actor_role or actor_id),
+	actor_role: string (optional),
+	actor_id: path (optional),
+	date_display: path (optional),
+	date_iso: string (optional)
+)
+```
 * permanent location

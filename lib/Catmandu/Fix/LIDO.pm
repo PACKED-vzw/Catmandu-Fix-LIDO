@@ -11,6 +11,7 @@ our @EXPORT;
     lido_recid
     lido_worktype
     lido_description
+    lido_event
 );
 
 foreach my $fix (@EXPORT) {

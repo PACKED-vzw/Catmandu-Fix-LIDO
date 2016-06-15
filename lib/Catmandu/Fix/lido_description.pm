@@ -3,7 +3,7 @@ package Catmandu::Fix::lido_description;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Catmandu::Fix::LIDO_Utility qw(walk);
+use Catmandu::Fix::LIDO::Utility qw(walk);
 
 use strict;
 
