@@ -23,7 +23,7 @@ sub emit {
 	my $worktype_path = $fixer->split_path($self->worktype);
 	my $worktype_key = pop @$worktype_path;
 	
-	my $new_path = ['descriptiveMetadata', 'objectClassificationWrap', 'objectWorkTypeWrap', 'objectWorkType', '$append'];
+	my $new_path = ['descriptiveMetadata'];
 	
 	my $h = $fixer->generate_var();
 	my $workType = $fixer->generate_var();
@@ -46,30 +46,47 @@ sub emit {
 		$fixer->var,
 		$new_path,
 		sub {
-			my $worktype_root = shift;
-			my $code = '';
-			$code .= $fixer->emit_create_path(
-				$worktype_root,
-				['term', '$append'],
+			my $descriptive_metadata_root = shift;
+			my $descriptive_metadata_code = '';
+			$descriptive_metadata_code .= $fixer->emit_create_path(
+				$descriptive_metadata_root,
+				['lang'],
 				sub {
-					my $worktype_pos = shift;
-					return "${worktype_pos} = {"
-						."'_' => ${workType},"
-						."'lang' => '".$self->lang."'"
-						."};";
+					my $lang_pos = shift;
+					return "${lang_pos} = '" . $self->lang . "';";
 				}
 			);
-			if ($self->conceptid) {
-				$code .= $fixer->emit_create_path(
-					$worktype_root,
-					['conceptID', '$append', '_'],
-					sub {
-						my $concept_id_pos = shift;
-						return "${concept_id_pos} = ${conceptID};";
+			$descriptive_metadata_code .= $fixer->emit_create_path(
+				$descriptive_metadata_root,
+				[ 'objectClassificationWrap', 'objectWorkTypeWrap', 'objectWorkType', '$append' ],
+				sub {
+					my $worktype_root = shift;
+					my $code = '';
+					$code .= $fixer->emit_create_path(
+						$worktype_root,
+						['term', '$append'],
+						sub {
+							my $worktype_pos = shift;
+							return "${worktype_pos} = {"
+								."'_' => ${workType},"
+								."'lang' => '".$self->lang."'"
+								."};";
+						}
+					);
+					if ($self->conceptid) {
+						$code .= $fixer->emit_create_path(
+							$worktype_root,
+							['conceptID', '$append', '_'],
+							sub {
+								my $concept_id_pos = shift;
+								return "${concept_id_pos} = ${conceptID};";
+							}
+					);
 					}
+					return $code;
+				}
 			);
-			}
-			return $code;
+			return $descriptive_metadata_code;
 		}
 	);
 	

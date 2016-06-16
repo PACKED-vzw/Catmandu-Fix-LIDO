@@ -21,8 +21,7 @@ sub emit {
 	my $description_path = $fixer->split_path($self->description);
 	my $description_key = pop @$description_path;
 	
-	my $new_path = ['descriptiveMetadata', 'objectIdentificationWrap', 'objectDescriptionWrap',
-	'objectDescriptionSet', 'descriptiveNoteValue', '$append'];
+	my $new_path = ['descriptiveMetadata'];
 	
 	my $h = $fixer->generate_var();
 	my $perl = '';
@@ -35,17 +34,28 @@ sub emit {
 		$fixer->var,
 		$new_path,
 		sub {
-			my $path_var = shift;
-			if ($self->lang) {
-				return "${path_var} = {"
-					."'_' => ${h},"
-					."'lang' => '".$self->lang."'"
-					."}";
-			} else {
-				return "${path_var} = {"
-					."'_' => ${h}"
-					."}";
-			}
+			my $descriptive_metadata_root = shift;
+			my $descriptive_metadata_code = '';
+			$descriptive_metadata_code .= $fixer->emit_create_path(
+				$descriptive_metadata_root,
+				['lang'],
+				sub {
+					my $lang_pos = shift;
+					return "${lang_pos} = '".$self->lang."';"
+				}
+			);
+			$descriptive_metadata_code .= $fixer->emit_create_path(
+				$descriptive_metadata_root,
+				['objectIdentificationWrap', 'objectDescriptionWrap', 'objectDescriptionSet', 'descriptiveNoteValue', '$append'],
+				sub {
+					my $description_note_pos = shift;
+					return "${description_note_pos} = {"
+						."'_' => ${h},"
+						."'lang' => '".$self->lang."'"
+						."}";
+				}
+			);
+			return $descriptive_metadata_code;
 		}
 	);
 	

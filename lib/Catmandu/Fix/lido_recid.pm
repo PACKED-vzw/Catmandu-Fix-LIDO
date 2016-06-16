@@ -13,13 +13,14 @@ use strict;
 with 'Catmandu::Fix::Base';
 
 has recid => ( fix_arg => 1 );
+has type => (fix_arg => 1);
 
 sub emit {
 	my ($self, $fixer) = @_;
 	my $recid_path = $fixer->split_path($self->recid);
 	my $recid_key = pop @$recid_path;
 	
-	my $new_path = ['lidoRecID', '$append', '_'];
+	my $new_path = ['lidoRecID', '$append'];
 	
 	my $h = $fixer->generate_var();
 	my $perl = '';
@@ -32,7 +33,10 @@ sub emit {
 		$new_path,
 		sub {
 			my $path_var = shift;
-			return "${path_var} = ${h};";
+			return "${path_var} = {"
+				."'_' => ${h},"
+				."'type' => '".$self->type."'"
+				."};";
 		}
 	);
 	

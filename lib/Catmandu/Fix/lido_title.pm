@@ -25,8 +25,7 @@ sub emit {
 	my $source_path = $fixer->split_path( $self->source );
 	my $source_key = pop @$source_path;
 	my $new_path    = [
-		'descriptiveMetadata',
-		'objectIdentificationWrap', 'titleWrap'
+		'descriptiveMetadata'
 	];
 	my $perl = '';
 	# $h = the variable that holds the titleSet (it is a hash)
@@ -52,35 +51,52 @@ sub emit {
 		$fixer->var,
 		$new_path,
 		sub {
-			my $path_var = shift;
-			$fixer->emit_create_path(
-				$path_var,
-				['titleSet'],
+			my $descriptive_metadata_root = shift;
+			my $descriptive_metadata_code = '';
+			$descriptive_metadata_code .= $fixer->emit_create_path(
+				$descriptive_metadata_root,
+				['lang'],
 				sub {
-					my $title_root = shift;
-					my $title_code = '';
-					$title_code .= $fixer->emit_create_path(
-						$title_root,
-						['appellationValue', '$append'],
-						sub {
-							my $appellation_value_pos = shift;
-							return "${appellation_value_pos} = {"
-								."'_' => ${appellationValue},"
-								." 'lang' => '".$self->lang."'"
-								."};";
-						}
-					);
-					$title_code .= $fixer->emit_create_path(
-						$title_root,
-						['sourceAppellation', '$append', '_'],
-						sub {
-							my $source_appellation_pos = shift;
-							return "${source_appellation_pos} = ${sourceAppellation};";
-						}
-					);
-					return $title_code;
+					my $lang_pos = shift;
+					return "${lang_pos} = '" . $self->lang . "';";
 				}
 			);
+			$descriptive_metadata_code .= $fixer->emit_create_path(
+				$descriptive_metadata_root,
+				[ 'objectIdentificationWrap', 'titleWrap' ],
+				sub {
+					my $path_var = shift;
+					$fixer->emit_create_path(
+						$path_var,
+						['titleSet'],
+						sub {
+							my $title_root = shift;
+							my $title_code = '';
+							$title_code .= $fixer->emit_create_path(
+								$title_root,
+								['appellationValue', '$append'],
+								sub {
+									my $appellation_value_pos = shift;
+									return "${appellation_value_pos} = {"
+										."'_' => ${appellationValue},"
+										." 'lang' => '".$self->lang."'"
+										."};";
+								}
+							);
+							$title_code .= $fixer->emit_create_path(
+								$title_root,
+								['sourceAppellation', '$append', '_'],
+								sub {
+									my $source_appellation_pos = shift;
+									return "${source_appellation_pos} = ${sourceAppellation};";
+								}
+							);
+							return $title_code;
+						}
+					);
+				}
+			);
+			return $descriptive_metadata_code;
 		}
 	);
 	$perl;
