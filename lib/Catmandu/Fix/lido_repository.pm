@@ -98,3 +98,13 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+Catmandu::Fix::lido_repository - LIDO Repository
+
+=head1 SYNOPSIS
+lido_repository(legalBodyName, workID, lang: en)

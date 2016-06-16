@@ -95,3 +95,15 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::lido_worktype - Create a Lido objectWorkType
+
+=head1 SYNOPSIS
+
+lido_worktype(workType, conceptid: conceptID, lang: en)

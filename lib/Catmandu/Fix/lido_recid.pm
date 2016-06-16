@@ -44,3 +44,15 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::lido_recid - Create a Lido lidoRecID
+
+=head1 SYNOPSIS
+
+lido_recid(lidoRecID, type)

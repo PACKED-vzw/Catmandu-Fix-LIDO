@@ -64,3 +64,13 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+Catmandu::Fix::description - LIDO descriptive note
+
+=head1 SYNOPSIS
+lido_description(description, lang: en)

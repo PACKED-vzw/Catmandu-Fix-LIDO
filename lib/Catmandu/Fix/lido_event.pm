@@ -3,7 +3,7 @@ package Catmandu::Fix::lido_event;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Catmandu::Fix::LIDO::Utility qw(walk path_and_key);
+use Catmandu::Fix::LIDO::Utility qw(walk);
 
 use strict;
 
@@ -205,3 +205,24 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+Catmandu::Fix::lido_event - LIDO Events
+
+=head1 SYNOPSIS
+lido_event(
+    type,
+    lang: en,
+    id: eventID,
+    name: eventName,
+    actor_name: nameActorSet.appellationValue,
+    actor_role: roleActor.term,
+    actor_id: actorID,
+    date_display: displayDate,
+    date_iso: date.earliestDate
+)
+

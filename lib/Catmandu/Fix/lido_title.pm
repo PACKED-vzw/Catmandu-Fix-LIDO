@@ -114,8 +114,4 @@ Catmandu::Fix::lido_title - Create a Lido titleSet
 
 =head1 SYNOPSIS
 
-Create a Lido titleSet consisting of a appellationValue and a sourceAppellation from
-two items in the current document.
-
-	# Fix
-	lido_title(appellationValue, sourceAppellation)
+lido_title(appellationValue, sourceAppellation, lang: en)

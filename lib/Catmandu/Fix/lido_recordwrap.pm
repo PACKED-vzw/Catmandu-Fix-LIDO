@@ -115,3 +115,19 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+Catmandu::Fix::lido_recordwrap - LIDO RecordWrap
+
+=head1 SYNOPSIS
+lido_recordwrap(
+    recordID,
+    recordID_type,
+    recordType,
+    recordSource,
+    lang: en
+)
