@@ -23,7 +23,7 @@ sub emit {
 	my $worktype_path = $fixer->split_path($self->worktype);
 	my $worktype_key = pop @$worktype_path;
 	
-	my $new_path = ['lido', 'descriptiveMetadata', 'objectClassificationWrap', 'objectWorkTypeWrap', '$append', 'objectWorkType'];
+	my $new_path = ['descriptiveMetadata', 'objectClassificationWrap', 'objectWorkTypeWrap', 'objectWorkType', '$append'];
 	
 	my $h = $fixer->generate_var();
 	my $workType = $fixer->generate_var();
@@ -46,14 +46,30 @@ sub emit {
 		$fixer->var,
 		$new_path,
 		sub {
-			my $path_var = shift;
+			my $worktype_root = shift;
 			my $code = '';
-			$code .= "${h}->{'term'} = ${workType};";
+			$code .= $fixer->emit_create_path(
+				$worktype_root,
+				['term', '$append'],
+				sub {
+					my $worktype_pos = shift;
+					return "${worktype_pos} = {"
+						."'_' => ${workType},"
+						."'lang' => '".$self->lang."'"
+						."};";
+				}
+			);
 			if ($self->conceptid) {
-				$code .= "${h}->{'conceptID'} = ${conceptID};";
+				$code .= $fixer->emit_create_path(
+					$worktype_root,
+					['conceptID', '$append', '_'],
+					sub {
+						my $concept_id_pos = shift;
+						return "${concept_id_pos} = ${conceptID};";
+					}
+			);
 			}
-			$code .= "${path_var} = ${h};";
-			$code;
+			return $code;
 		}
 	);
 	

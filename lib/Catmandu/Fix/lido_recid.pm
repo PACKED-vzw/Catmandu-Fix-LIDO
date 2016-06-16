@@ -19,7 +19,7 @@ sub emit {
 	my $recid_path = $fixer->split_path($self->recid);
 	my $recid_key = pop @$recid_path;
 	
-	my $new_path = ['lido', 'lidoRecID'];
+	my $new_path = ['lidoRecID', '$append', '_'];
 	
 	my $h = $fixer->generate_var();
 	my $perl = '';
@@ -32,7 +32,7 @@ sub emit {
 		$new_path,
 		sub {
 			my $path_var = shift;
-			"${path_var} = ${h};";
+			return "${path_var} = ${h};";
 		}
 	);
 	

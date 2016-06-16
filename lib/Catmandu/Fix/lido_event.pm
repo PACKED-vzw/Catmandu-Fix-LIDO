@@ -20,13 +20,15 @@ has actor_id     => ( fix_opt => 1 );
 has date_display => ( fix_opt => 1 );
 has date_iso     => ( fix_opt => 1 );
 
+# This builds the structure LIDO::XML needs to convert it to valid XML
+
 sub emit {
 	my ($self, $fixer) = @_;
 	
 	my $optional_as_path   = [qw(id name actor_name actor_id date_display)];
 	my $optional_as_string = [qw(actor_role date_iso)];
 
-	my $new_path = [qw(lido descriptiveMetadata eventWrap $append eventSet event)];
+	my $new_path = [qw(descriptiveMetadata eventWrap eventSet $append event)];
 
 	my $h = $fixer->generate_var();
 	
@@ -74,7 +76,7 @@ sub emit {
 						if ($self->actor_name) {
 							$actor_code .= $fixer->emit_create_path(
 								$actor_root,
-								['actor', 'nameActorSet', 'appellationValue'],
+								['actor', 'nameActorSet', 'appellationValue', '$append', '_'],
 								sub {
 									my $actor_name_pos = shift;
 									return "${actor_name_pos} = ".$optional_paths->{'actor_name'}->{'var'}.";";
@@ -84,7 +86,7 @@ sub emit {
 						if ($self->actor_id) {
 							$actor_code .= $fixer->emit_create_path(
 								$actor_root,
-								['actor', 'actorID'],
+								['actor', 'actorID', '$append', '_'],
 								sub {
 									my $actor_id_pos = shift;
 									return "${actor_id_pos} = ".$optional_paths->{'actor_id'}->{'var'}.";";
@@ -94,7 +96,7 @@ sub emit {
 						if ($self->actor_role) {
 							$actor_code .= $fixer->emit_create_path(
 								$actor_root,
-								['roleActor', 'term'],
+								['roleActor', 'term', '$append', '_'],
 								sub {
 									my $actor_role_pos = shift;
 									return "${actor_role_pos} = '".$self->actor_role."';";
@@ -110,14 +112,14 @@ sub emit {
 			if ($self->date_display || $self->date_iso) {
 				$event_code .= $fixer->emit_create_path(
 					$event_root,
-					['eventDate', '$append'],
+					['eventDate'],
 					sub {
 						my $date_root = shift;
 						my $date_code = '';
 						if ($self->date_display) {
 							$date_code .= $fixer->emit_create_path(
 								$date_root,
-								['displayDate'],
+								['displayDate', '$append', '_'],
 								sub {
 									my $display_date_pos = shift;
 									return "${display_date_pos} = ".$optional_paths->{'date_display'}->{'var'}.";";
@@ -131,8 +133,8 @@ sub emit {
 								sub {
 									my $iso_date_pos = shift;
 									return "${iso_date_pos} = {"
-										."'earliestDate' => '".$self->date_iso."',"
-										."'latestDate' => '".$self->date_iso."'"
+										."'earliestDate' => [{'_' => '".$self->date_iso."'}],"
+										."'latestDate' => [{'_' => '".$self->date_iso."'}]"
 										."};";
 								}
 							);
@@ -146,7 +148,7 @@ sub emit {
 			if ($self->id) {
 				$event_code .= $fixer->emit_create_path(
 					$event_root,
-					['eventID'],
+					['eventID', '$append', '_'],
 					sub {
 						my $event_id_pos = shift;
 						return "${event_id_pos} = ".$optional_paths->{'id'}->{'var'}.";";
@@ -158,7 +160,7 @@ sub emit {
 			if ($self->name) {
 				$event_code .= $fixer->emit_create_path(
 					$event_root,
-					['eventName', 'appellationValue'],
+					['eventName', 'appellationValue', '$append', '_'],
 					sub {
 						my $event_name_pos = shift;
 						return "${event_name_pos} = ".$optional_paths->{'name'}->{'var'}.";";
@@ -169,7 +171,7 @@ sub emit {
 			#Type
 			$event_code .= $fixer->emit_create_path(
 				$event_root,
-				['eventType', 'term'],
+				['eventType', 'term', '$append', '_'],
 				sub {
 					my $event_type_pos = shift;
 					return "${event_type_pos} = '".$self->type."';";

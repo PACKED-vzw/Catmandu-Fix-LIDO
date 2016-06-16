@@ -21,8 +21,8 @@ sub emit {
 	my $description_path = $fixer->split_path($self->description);
 	my $description_key = pop @$description_path;
 	
-	my $new_path = ['lido', 'descriptiveMetadata', 'objectIdentificationWrap', 'objectDescriptionWrap', '$append',
-	'objectDescriptionSet', 'descriptiveNoteValue'];
+	my $new_path = ['descriptiveMetadata', 'objectIdentificationWrap', 'objectDescriptionWrap',
+	'objectDescriptionSet', 'descriptiveNoteValue', '$append'];
 	
 	my $h = $fixer->generate_var();
 	my $perl = '';
@@ -36,7 +36,16 @@ sub emit {
 		$new_path,
 		sub {
 			my $path_var = shift;
-			"${path_var} = ${h};";
+			if ($self->lang) {
+				return "${path_var} = {"
+					."'_' => ${h},"
+					."'lang' => '".$self->lang."'"
+					."}";
+			} else {
+				return "${path_var} = {"
+					."'_' => ${h}"
+					."}";
+			}
 		}
 	);
 	

@@ -12,6 +12,7 @@ our @EXPORT;
     lido_worktype
     lido_description
     lido_event
+    lido_recordwrap
 );
 
 foreach my $fix (@EXPORT) {

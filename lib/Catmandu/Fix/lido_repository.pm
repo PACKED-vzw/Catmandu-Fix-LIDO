@@ -23,9 +23,8 @@ sub emit {
 	my $workid_key  = pop @$workid_path;
 
 	my $new_path = [
-		'lido',                     'descriptiveMetadata',
-		'objectIdentificationWrap', 'repositoryWrap',
-		'$append'
+		'descriptiveMetadata',
+		'objectIdentificationWrap', 'repositoryWrap'
 	];
 
 	my $perl           = '';
@@ -52,14 +51,25 @@ sub emit {
 				$path_var,
 				['repositorySet'],
 				sub {
-					my $path_var = shift;
-					"${h}->{'repositoryName'} = {"
-					  . "'legalBodyName' => {"
-					  	. "'appellationValue' => ${repositoryName}" 
-					  	. "}" 
-					  . "};"
-					  . "${h}->{'workID'} = ${workID};"
-					  . "${path_var} = ${h};";
+					my $repository_root = shift;
+					my $repository_code = '';
+					$repository_code .= $fixer->emit_create_path(
+						$repository_root,
+						['repositoryName', 'legalBodyName', 'appellationValue', '$append', '_'],
+						sub {
+							my $repository_name_pos = shift;
+							return "${repository_name_pos} = ${repositoryName};";
+						}
+					);
+					$repository_code .= $fixer->emit_create_path(
+						$repository_root,
+						['workID', '$append', '_'],
+						sub {
+							my $workid_pos = shift;
+							return "${workid_pos} = ${workID};";
+						}
+					);
+					return $repository_code;
 				}
 			);
 		}
