@@ -1,7 +1,7 @@
 {
    "abstract" : "Implement LIDO fixes",
    "author" : [
-      "unknown"
+      "Pieter De Praetere, C<< <pieter at packed.be> >>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Dist::Zilla version 6.005, Dist::Milla version v1.0.16, CPAN::Meta::Converter version 2.143240",
@@ -50,7 +50,18 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.218",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/netsensei/Catmandu-Fix-LIDO/issues"
+      },
+      "homepage" : "https://github.com/netsensei/Catmandu-Fix-LIDO",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/netsensei/Catmandu-Fix-LIDO.git",
+         "web" : "https://github.com/netsensei/Catmandu-Fix-LIDO"
+      }
+   },
+   "version" : "0.001",
    "x_contributors" : [
       "Matthias Vandermaesen <matthias@colada.be>"
    ]
