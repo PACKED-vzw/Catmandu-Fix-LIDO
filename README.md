@@ -1,26 +1,9 @@
 # NAME
 
-Catmandu::Fix::LIDO - Blah blah blah
+Catmandu::Fix::LIDO - Implement LIDO fixes
 
 # SYNOPSIS
 
-    use Catmandu::Fix::LIDO;
+A set of fixes for the Catmandu project to convert data to the LIDO XML format.
 
-# DESCRIPTION
-
-Catmandu::Fix::LIDO is
-
-# AUTHOR
-
-Matthias Vandermaesen <matthias@colada.be>
-
-# COPYRIGHT
-
-Copyright 2016- Matthias Vandermaesen
-
-# LICENSE
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-# SEE ALSO
+These fixes generate a data structure that can be exported to XML using the Catmandu LIDO exporter.

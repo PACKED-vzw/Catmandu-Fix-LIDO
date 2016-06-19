@@ -1,7 +1,7 @@
 {
-   "abstract" : "Blah blah blah",
+   "abstract" : "Implement LIDO fixes",
    "author" : [
-      "Matthias Vandermaesen <matthias@colada.be>"
+      "unknown"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Dist::Zilla version 6.005, Dist::Milla version v1.0.16, CPAN::Meta::Converter version 2.143240",
@@ -37,7 +37,10 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008005"
+            "Catmandu" : "1.0201",
+            "Catmandu::XML" : "0.16",
+            "Moo" : "1.0",
+            "perl" : "v5.10.1"
          }
       },
       "test" : {
@@ -47,6 +50,9 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.01"
+   "version" : "0.218",
+   "x_contributors" : [
+      "Matthias Vandermaesen <matthias@colada.be>"
+   ]
 }
 
