@@ -80,21 +80,25 @@ The _acquisition method_, _acquired from_ and _acquisition date_ elements from t
 *  _descriptiveMetadata.eventWrap.eventSet.event.eventName.appellationValue_
 *  _descriptiveMetadata.eventWrap.eventSet.event.eventType.term_
 
-As `lido_event()`:
+To create an event, you have to wrap the `lido_event()`-fix inside a `lido_event_bind()`, which creates the path to a (new) event. The `lido_event()` and other fixes you execute inside the bind can use `event` as the root path to ceate the event. The bind will move this path to the correct LIDO path.
+
+As `lido_event()` inside `lido_event_bind()`:
 >
 
 ```
-lido_event(
-    type,
-    lang: en,
-    id: eventID,
-    name: eventName,
-    actor_name: nameActorSet.appellationValue,
-    actor_role: roleActor.term,
-    actor_id: actorID,
-    date_display: displayDate,
-    date_iso: date.earliestDate
-)
+do lido_event_bind()
+    lido_event(
+        type,
+        lang: en,
+        id: eventID,
+        name: eventName,
+        actor_name: nameActorSet.appellationValue,
+        actor_role: roleActor.term,
+        actor_id: actorID,
+        date_display: displayDate,
+        date_iso: date.earliestDate
+    )
+end
 
 ```
 
