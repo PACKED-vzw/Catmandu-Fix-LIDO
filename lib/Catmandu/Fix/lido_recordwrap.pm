@@ -3,7 +3,7 @@ package Catmandu::Fix::lido_recordwrap;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Catmandu::Fix::LIDO::Utility qw(walk path_and_key);
+use Catmandu::Fix::LIDO::Utility qw(walk);
 
 use strict;
 
