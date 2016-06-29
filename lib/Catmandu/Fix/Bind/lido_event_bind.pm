@@ -44,7 +44,7 @@ __END__
 Catmandu::Fix::lido_event_bind - Bind for LIDO Events
 
 =head1 SYNOPSIS
-do lido_event_bind()
+do lido_event_bind( -lang => 'en' )
 	lido_event()
 	add_field(event.eventName, 'bar')
 end
@@ -55,4 +55,6 @@ fix, you can use the 'event' tag as root and create your fixes against that. Aft
 
 This has the added side-effect that you can group all tags related to a single event together, even if they can't be all expressed in a lido_event()-function. Otherwise,
 using a normal fix (e.g. add_field) in combination with $append would result in the creation of a new event, making it almost impossible to add to an existing event.
+
+The parameter 'lang' is optional.
 
