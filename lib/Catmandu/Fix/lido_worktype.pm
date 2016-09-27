@@ -16,6 +16,8 @@ with 'Catmandu::Fix::Base';
 has worktype => (fix_arg => 1);
 has conceptid => (fix_opt => 1);
 has lang => (fix_opt => 1, default => sub { 'en' } );
+has source => (fix_opt => 1, default => sub { 'AAT' } );
+has pref => (fix_opt => 1, default => sub { 'preferred' });
 
 sub emit {
 	my ($self, $fixer) = @_;
@@ -69,17 +71,22 @@ sub emit {
 							my $worktype_pos = shift;
 							return "${worktype_pos} = {"
 								."'_' => ${workType},"
-								."'lang' => '".$self->lang."'"
+								."'lang' => '".$self->lang."',"
+								."'pref' => '".$self->pref."'"
 								."};";
 						}
 					);
 					if ($self->conceptid) {
 						$code .= $fixer->emit_create_path(
 							$worktype_root,
-							['conceptID', '$append', '_'],
+							['conceptID', '$append'],
 							sub {
 								my $concept_id_pos = shift;
-								return "${concept_id_pos} = ${conceptID};";
+								return "${concept_id_pos} = {"
+								."'_' => ${conceptID},"
+								."'pref' => '".$self->pref."',"
+								."'source' => '".$self->source."'"
+								."};";
 							}
 					);
 					}
@@ -106,4 +113,4 @@ Catmandu::Fix::lido_worktype - Create a Lido objectWorkType
 
 =head1 SYNOPSIS
 
-lido_worktype(workType, conceptid: conceptID, lang: en)
+lido_worktype(workType, conceptid: conceptID, lang: en, pref: preferred, source: AAT)
