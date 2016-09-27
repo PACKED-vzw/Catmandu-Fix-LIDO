@@ -6,4 +6,5 @@ on test => sub {
 
 requires 'Catmandu', '>=1.0201';
 requires 'Catmandu::XML', '>=0.16';
+requires 'Catmandu::Exporter::LIDO', '>=0.03';
 requires 'Moo', '1.0';
