@@ -35,7 +35,7 @@ All elements can be repeated.
 * _descriptiveMetadata.objectIdentificationWrap.repositoryWrap.repositoryName.legalBodyName.appellationValue_
 * _descriptiveMetadata.objectIdentificationWrap.repositoryWrap.workID_
 
-As `lido_repository(legalBodyName, workID, lang: en)` where `legalBodyName` and `workID` are paths and required and `lang` is an optional string (default: `en`).
+As `lido_repository(legalBodyName, workID, lang: en, pref: preferred)` where `legalBodyName` and `workID` are paths and required and `lang` and `pref` are optional strings (default: `en` and `preferred`).
 
 ### Inventory number
 
@@ -50,14 +50,14 @@ This element is required.
 * _descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term_
 * _descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.conceptID_
 
-As `lido_worktype(workType, conceptid: conceptID, lang: en)` where `workType` is a required path, `conceptid` an optional path and `lang` an optional string (default: `en`).
+As `lido_worktype(workType, conceptid: conceptID, lang: en, source: AAT, pref: preferred)` where `workType` is a required path, `conceptid` an optional path and `lang`, `source` and `pref` are optional strings (default: `en`, `AAT` and `preferred`).
 
 ### Title
 
 * _descriptiveMetadata.objectIdentificationWrap.titleWrap.titleSet.appellationValue_
 * _descriptiveMetadata.objectIdentificationWrap.titleWrap.titleSet.sourceAppellation_
 
-As `lido_title(appellationValue, sourceAppellation, lang: en)` where `appellationValue` and `sourceAppellation` are required paths and `lang` is an optional string (default: `en`).
+As `lido_title(appellationValue, sourceAppellation, lang: en, pref: preferred)` where `appellationValue` and `sourceAppellation` are required paths and `lang` and `pref` are optional strings (default: `en` and `preferred`).
 
 This element is required.
 
