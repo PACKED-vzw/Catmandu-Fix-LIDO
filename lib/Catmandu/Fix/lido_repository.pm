@@ -16,6 +16,7 @@ with 'Catmandu::Fix::Base';
 has name   => ( fix_arg => 1 );
 has workid => ( fix_arg => 1 );
 has lang   => ( fix_opt => 1, default => sub { 'en' } );
+has pref => (fix_opt => 1, default => sub { 'preferred' });
 
 sub emit {
 	my ( $self, $fixer ) = @_;
@@ -71,12 +72,15 @@ sub emit {
 								$repository_root,
 								[
 									'repositoryName',   'legalBodyName',
-									'appellationValue', '$append',
-									'_'
+									'appellationValue', '$append'
 								],
 								sub {
 									my $repository_name_pos = shift;
-									return "${repository_name_pos} = ${repositoryName};";
+									return "${repository_name_pos} = {"
+									."'_' => ${repositoryName},"
+									."'lang' => '".$self->lang."',"
+									."'pref' => '".$self->pref."'"
+									."};";
 								}
 							);
 							$repository_code .= $fixer->emit_create_path(

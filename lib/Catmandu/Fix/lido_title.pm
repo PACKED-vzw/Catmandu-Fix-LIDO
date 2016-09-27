@@ -16,6 +16,7 @@ with 'Catmandu::Fix::Base';
 has value  => ( fix_arg => 1 );
 has source => ( fix_arg => 1 );
 has lang => ( fix_opt => 1, default => sub { 'en' } );
+has pref => (fix_opt => 1, default => sub { 'preferred' });
 
 
 sub emit {
@@ -79,7 +80,8 @@ sub emit {
 									my $appellation_value_pos = shift;
 									return "${appellation_value_pos} = {"
 										."'_' => ${appellationValue},"
-										." 'lang' => '".$self->lang."'"
+										."'lang' => '".$self->lang."',"
+										."'pref' => '".$self->pref."'"
 										."};";
 								}
 							);
