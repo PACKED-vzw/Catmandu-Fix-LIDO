@@ -9,8 +9,10 @@ our @EXPORT_OK = qw(walk);
 
 ##
 # Walk through a path ($path) until at
-# $key. Set $h = $val.
+# $key. Set $h = $val in the fixer code.
 # $h must be declared before calling walk()
+# This has the effect of assigning $val (the value of the leaf
+# node you're walking to) to $h, so you can use $h in your fix.
 sub walk {
 	my ($fixer, $path, $key, $h) = @_;
 	
