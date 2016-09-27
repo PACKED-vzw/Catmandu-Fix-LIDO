@@ -112,4 +112,4 @@ __END__
 Catmandu::Fix::lido_repository - LIDO Repository
 
 =head1 SYNOPSIS
-lido_repository(legalBodyName, workID, lang: en)
+lido_repository(legalBodyName, workID, lang: en, pref:preferred)

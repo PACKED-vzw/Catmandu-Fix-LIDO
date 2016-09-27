@@ -116,4 +116,4 @@ Catmandu::Fix::lido_title - Create a Lido titleSet
 
 =head1 SYNOPSIS
 
-lido_title(appellationValue, sourceAppellation, lang: en)
+lido_title(appellationValue, sourceAppellation, lang: en, pref:preferred)
