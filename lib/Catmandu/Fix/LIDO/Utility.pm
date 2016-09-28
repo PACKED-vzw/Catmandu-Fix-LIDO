@@ -4,8 +4,22 @@ use strict;
 
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(walk);
+our @EXPORT_OK = qw(walk declare_source);
 
+##
+# For a source $var, that is a path parameter to a fix,
+# use walk() to get the value and return the generated
+# $perl code.
+sub declare_source {
+	my ( $fixer, $var, $declared_var ) = @_;
+
+	my $perl = '';
+
+	my $var_path = $fixer->split_path ( $var );
+	my $var_key = pop @$var_path;
+	$perl .= walk($fixer, $var_path, $var_key, $declared_var);
+	return $perl;
+}
 
 ##
 # Walk through a path ($path) until at
@@ -14,7 +28,7 @@ our @EXPORT_OK = qw(walk);
 # This has the effect of assigning $val (the value of the leaf
 # node you're walking to) to $h, so you can use $h in your fix.
 sub walk {
-	my ($fixer, $path, $key, $h) = @_;
+	my ( $fixer, $path, $key, $h ) = @_;
 	
 	my $perl = '';
 	
