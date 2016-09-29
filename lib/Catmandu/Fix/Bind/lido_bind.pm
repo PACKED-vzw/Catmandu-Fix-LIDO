@@ -4,32 +4,23 @@ use strict;
 
 use Moo;
 
-use Catmandu::Fix::move_field as => 'c_move_field';
-use Catmandu::Fix::Has;
+use Data::Dumper qw(Dumper);
+
+use Catmandu::Fix::set_hash as => 'c_set_hash';
+use Catmandu::Fix::LIDO::Utility qw(deep_hash deep_hash_basic);
 
 with 'Catmandu::Fix::Bind';
 
-has dest	=>	(fix_arg => 1);
-has root	=>	(fix_opt => 1, default => sub { 'lido_bind' });
+extends 'Catmandu::Fix::Bind::with';
 
-sub unit {
-	my ($self, $data) = @_;
-	my $wrapped_data = $data;
-	if (!$wrapped_data->{$self->root}) {
-		$wrapped_data->{$self->root} = {};
+around unit => sub {
+	my ($orig, $self, $data) = @_;
+	if (defined($self->path)) {
+		deep_hash($data, [split(/\./, $self->path)]);
 	}
-	return $wrapped_data;
-}
-
-sub bind {
-	# Do all fixes, then move them to our event-hash
-	my ($self, $data, $fixes, $name) = @_;
-	my $path = [split(/\./, $self->dest)];
-	# $fixes = all fixes that are in the do this(); end; block.
-	# $append.event
-	$fixes->($data);
-	c_move_field($data, $self->root, join('.', @$path));
-}
+	print Dumper $data;
+	return $self->$orig($data);
+};
 
 1;
 
