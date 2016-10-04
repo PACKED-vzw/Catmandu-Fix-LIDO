@@ -31,3 +31,44 @@ lido:
       - foo: bar
 ...
 ```
+
+## Full list of created paths
+_(Note: `{}` indicates an empty hash. You can add fields there. If you vacuum, the empty ones will be removed.)_
+```
+---
+lido:
+- descriptiveMetadata:
+    eventWrap:
+    - {}
+    objectClassificationWrap:
+      classificationWrap:
+      - {}
+      objectWorkTypeWrap:
+      - {}
+    objectIdentificationWrap:
+      displayStateEditionWrap:
+      - {}
+      inscriptionsWrap:
+      - {}
+      objectDescriptionWrap:
+      - {}
+      objectMeasurementsWrap:
+      - {}
+      repositoryWrap:
+      - {}
+      titleWrap:
+      - {}
+    objectRelationWrap:
+      relatedWorksWrap:
+      - {}
+      subjectWrap:
+      - {}
+- administrativeMetadata:
+    recordWrap:
+    - {}
+    resourceWrap:
+    - {}
+    rightsWorkWrap:
+    - {}
+...
+```
