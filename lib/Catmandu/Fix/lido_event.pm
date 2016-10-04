@@ -211,7 +211,6 @@ sub emit {
 			return $event_code;
 		}
 	);
-
 	return $perl;
 }
 

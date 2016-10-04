@@ -6,21 +6,12 @@ use Moo;
 
 use Data::Dumper qw(Dumper);
 
-use Catmandu::Fix::set_hash as => 'c_set_hash';
-use Catmandu::Fix::LIDO::Utility qw(deep_hash deep_hash_basic);
+use Catmandu::Fix;
+
 
 with 'Catmandu::Fix::Bind';
 
 extends 'Catmandu::Fix::Bind::with';
-
-around unit => sub {
-	my ($orig, $self, $data) = @_;
-	if (defined($self->path)) {
-		deep_hash($data, [split(/\./, $self->path)]);
-	}
-	print Dumper $data;
-	return $self->$orig($data);
-};
 
 1;
 
