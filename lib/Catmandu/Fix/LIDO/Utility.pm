@@ -9,7 +9,23 @@ use Data::Dumper qw(Dumper);
 
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(walk declare_source mk_wrap);
+our @EXPORT_OK = qw(walk declare_source mk_wrap mk_append);
+
+
+sub mk_append {
+	my ($fixer, $root, $path) = @_;
+	my $perl = '';
+	push @$path, '$append';
+	$perl .= $fixer->emit_create_path(
+		$root,
+		$path,
+		sub {
+			my $local_root = shift;
+			return "${local_root} = {};";
+		}
+	);
+	return $perl;
+}
 
 ##
 # Make a generic wrap. A wrap is non-repeatable and thus is always a hash.
@@ -21,8 +37,8 @@ sub mk_wrap {
         $root,
         $path,
         sub {
-            my $root = shift;
-            return "${root} = {};";
+            my $local_root = shift;
+            return "${local_root} = {};";
         }
     );
     return $perl;
@@ -53,7 +69,7 @@ sub walk {
 	my ( $fixer, $path, $key, $h ) = @_;
 	
 	my $perl = '';
-	
+
 	$perl .= $fixer->emit_walk_path(
 		$fixer->var,
 		$path,

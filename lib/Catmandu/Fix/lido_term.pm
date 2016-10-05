@@ -4,6 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
+use Data::Dumper qw(Dumper);
 
 use strict;
 
@@ -17,6 +18,8 @@ has source    => ( fix_opt => 1, default => sub { 'AAT' } );
 
 sub emit {
     my ( $self, $fixer ) = @_;
+
+ #   print Dumper $fixer;
 
     my $perl = '';
     my $h = $fixer->generate_var();
