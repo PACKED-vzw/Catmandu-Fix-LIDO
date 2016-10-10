@@ -39,7 +39,7 @@ sub emit {
 
             $r_code .= $fixer->emit_create_path(
                 $root,
-                ['$append', 'descriptiveNoteValue'],
+                ['$append', 'descriptiveNoteValue', '$append'],
                 sub {
                     my $dn_root = shift;
                     return "${dn_root} = {"
