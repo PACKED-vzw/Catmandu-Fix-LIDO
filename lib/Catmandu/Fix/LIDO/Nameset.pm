@@ -1,4 +1,4 @@
-package Catmandu::Fix::LIDO::Nameset
+package Catmandu::Fix::LIDO::Nameset;
 
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
 
@@ -16,10 +16,12 @@ sub mk_nameset {
     my $new_path = $fixer->split_path($path);
     $code .= "my ${h} = {};";
 
+    my $f_av = $fixer->generate_var();
+    my $f_sa = $fixer->generate_var();
+
     ##
     # appellationValue
     if (defined($appellation_value)) {
-        my $f_av = $fixer->generate_var();
         $code .= "my ${f_av};";
         $code .= declare_source($fixer, $appellation_value, $f_av);
     }
@@ -27,7 +29,6 @@ sub mk_nameset {
     ##
     # sourceAppellation
     if (defined($source_appellation)) {
-        my $f_sa = $fixer->generate_var();
         $code .= "my ${f_sa};";
         $code .= declare_source($fixer, $source_appellation, $f_sa);
     }
