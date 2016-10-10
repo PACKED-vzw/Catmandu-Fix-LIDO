@@ -24,8 +24,11 @@ sub emit {
  #   print Dumper $fixer;
 
     my $perl = '';
+
+    print($self->pref);
     
-    $perl .= mk_term($fixer, $self->path, $self->term, $self->conceptid, $self->lang, $self->pref, $self->source, $self->type);
+    $perl .= mk_term($fixer, $self->path, $self->term, $self->conceptid,
+    $self->lang, $self->pref, $self->source, $self->type);
 
     return $perl;
 }

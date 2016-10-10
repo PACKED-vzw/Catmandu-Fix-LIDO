@@ -23,6 +23,7 @@ has object_work_type_type   => (fix_opt => 1, default => sub { 'global' });
 has object_work_type_source => (fix_opt => 1, default => sub { 'AAT' });
 has classification_type     => (fix_opt => 1, default => sub { 'global' });
 has classification_source   => (fix_opt => 1, default => sub { 'AAT' });
+has lang                    => (fix_opt => 1, default => sub {'en'});
 
 sub emit {
     my ($self, $fixer) = @_;
@@ -46,40 +47,15 @@ sub emit {
 #    $perl .= "my ${cl_id};";
 #    $perl .= declare_source($fixer, $self->classification_id, $cl_id);
 
-    $perl .= $fixer->emit_create_path(
-        $fixer->var,
-        $path,
-        sub {
-            my $c_root = shift;
+    # classification
+    $perl .= mk_term($fixer, 'objectClassificationWrap.classificationWrap.$append.classification',
+    $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,
+    $self->classification_type);
 
-            my $c_code = '';
-            #$c_code .= mk_term($fixer, 'objectClassificationWrap.objectWorkTypeWrap.$append.objectWorkType', $self->object_work_type, $self->object_work_type_id, undef, undef, $self->object_work_type_source, $self->object_work_type_type);
-            # objectWorkTypeWrap
-            #$c_code .= c_lido_term($fixer->var, 'objectClassificationWrap.objectWorkTypeWrap.$last.objectWorkType'
-            #, $self->object_work_type);
-            #$c_code .= $fixer->emit_create_path(
-            #    $c_root,
-            #    ['objectWorkTypeWrap', '$append', 'objectWorkType'],
-            #    sub {
-            #        my $ow_root = shift;
-            #        #objectClassificationWrap.objectWorkTypeWrap.$last.objectWorkType
-            #    }
-            #);
-            # classificationWrap
-            $c_code .= $fixer->emit_create_path(
-                $c_root,
-                ['classificationWrap', '$append', 'classification'],
-                sub {
-                    my $cl_root = shift;
-                    #objectClassificationWrap.classificationWrap.$last.classification
-                    return '';
-                }
-            );
-            return $c_code;
-        }
-    );
-    
-    $perl .= mk_term($fixer, 'objectClassificationWrap.objectWorkTypeWrap.$append.objectWorkType', $self->object_work_type, $self->object_work_type_id, undef, undef, $self->object_work_type_source, $self->object_work_type_type);
+    # objectWorkType
+    $perl .= mk_term($fixer, 'objectClassificationWrap.objectWorkTypeWrap.$append.objectWorkType',
+    $self->object_work_type, $self->object_work_type_id, $self->lang, undef, $self->object_work_type_source,
+    $self->object_work_type_type);
 
     return $perl;
 }

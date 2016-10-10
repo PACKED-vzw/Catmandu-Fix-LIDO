@@ -40,6 +40,8 @@ sub mk_term {
             my $p_root = shift;
             my $p_code = '';
 
+            # TODO pref is undefined?
+
             $p_code .= $fixer->emit_create_path(
                         $p_root,
                         ['term', '$append'],
@@ -47,7 +49,7 @@ sub mk_term {
                             my $term_root = shift;
                             return "${term_root} = {"
                             ."'_' => ${f_term},"
-                            ."'lang' => '". $lang."',"
+                            ."'lang' => '".$lang."',"
                             ."'pref' => '".$pref."'"
                             ."}";
                         }
