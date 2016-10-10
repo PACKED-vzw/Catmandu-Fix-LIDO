@@ -31,22 +31,6 @@ sub emit {
     my $path = ['objectClassificationWrap'];
     my $perl = '';
 
-#    my $w_type = $fixer->generate_var();
-#    $perl .= "my ${w_type};";
-#    $perl .= declare_source($fixer, $self->object_work_type, $w_type);
-#
-#    my $cl = $fixer->generate_var();
-#    $perl .= "my ${cl};";
-#    $perl .= declare_source($fixer, $self->classification, $cl);
-#
-#    my $w_type_id = $fixer->generate_var();
-#    $perl .= "my ${w_type_id};";
-#    $perl .= declare_source($fixer, $self->object_work_type_id, $w_type_id);
-#
-#    my $cl_id = $fixer->generate_var();
-#    $perl .= "my ${cl_id};";
-#    $perl .= declare_source($fixer, $self->classification_id, $cl_id);
-
     # classification
     $perl .= mk_term($fixer, 'objectClassificationWrap.classificationWrap.$append.classification',
     $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,

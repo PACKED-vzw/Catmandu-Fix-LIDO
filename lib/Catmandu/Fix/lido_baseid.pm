@@ -4,7 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk);
-use Catmandu::Fix::LIDO::LidoID qw(generate_id);
+use Catmandu::Fix::LIDO::ID qw(mk_id);
 
 use strict;
 
@@ -33,7 +33,7 @@ sub emit {
 	
 	$perl .= walk($fixer, $recid_path, $recid_key, $h);
 	
-	$perl .= generate_id($fixer, $new_path, $h, $self->source, $self->label, $self->type);
+	$perl .= mk_id($fixer, $new_path, $h, $self->source, $self->label, $self->type);
 	
 	$perl;
 }

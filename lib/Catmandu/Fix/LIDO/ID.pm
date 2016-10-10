@@ -1,4 +1,4 @@
-package Catmandu::Fix::LIDO::LidoID;
+package Catmandu::Fix::LIDO::ID;
 
 use strict;
 
@@ -7,9 +7,9 @@ use Data::Dumper qw(Dumper);
 
 use Catmandu::Fix::LIDO::Utility qw(walk);
 
-our @EXPORT_OK = qw(generate_id);
+our @EXPORT_OK = qw(mk_id);
 
-sub generate_id {
+sub mk_id {
     my ($fixer, $path, $cm_value, $source, $label, $type) = @_;
     push @$path, '$append';
     my $perl = '';
