@@ -45,7 +45,7 @@ sub mk_nameset {
             if (defined($appellation_value)) {
                 $r_code .= $fixer->emit_create_path(
                     $root,
-                    ['$append', 'appellationValue'],
+                    ['$append', 'appellationValue', '$append'],
                     sub {
                         my $av_root = shift;
                         my $av_code = '';
@@ -65,7 +65,7 @@ sub mk_nameset {
             if (defined ($source_appellation)) {
                 $r_code .= $fixer->emit_create_path(
                     $root,
-                    ['$append', 'sourceAppellation'],
+                    ['$append', 'sourceAppellation', '$append'],
                     sub {
                         my $sa_root = shift;
                         my $sa_code = '';
