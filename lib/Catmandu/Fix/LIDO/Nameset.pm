@@ -1,6 +1,7 @@
 package Catmandu::Fix::LIDO::Nameset;
 
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
+use Catmandu::Fix::LIDO::Value qw(mk_value);
 
 use strict;
 
@@ -37,45 +38,21 @@ sub mk_nameset {
         $fixer->var,
         $new_path,
         sub {
-            my $root = shift;
+            my $r_root = shift;
             my $r_code = '';
 
             ##
             # appellationValue
             if (defined($appellation_value)) {
-                $r_code .= $fixer->emit_create_path(
-                    $root,
-                    ['$append', 'appellationValue', '$append'],
-                    sub {
-                        my $av_root = shift;
-                        my $av_code = '';
-                        $av_code .= "${av_root} = {"
-                        ."'_' => ${f_av},"
-                        ."'lang' => '".$appellation_value_lang."',"
-                        ."'pref' => '".$appellation_value_pref."',"
-                        ."'type' => '".$appellation_value_type."'"
-                        ."}";
-                        return $av_code;
-                    }
-                );
+                $r_code .= mk_value($fixer, $r_root, 'appellationValue', $appellation_value,
+                $appellation_value_lang, $appellation_value_pref, undef, $appellation_value_type);
             }
 
             ##
             # sourceAppellation
             if (defined ($source_appellation)) {
-                $r_code .= $fixer->emit_create_path(
-                    $root,
-                    ['$append', 'sourceAppellation', '$append'],
-                    sub {
-                        my $sa_root = shift;
-                        my $sa_code = '';
-                        $sa_code .= "${sa_root} = {"
-                        ."'_' => ${f_sa},"
-                        ."'lang' => '".$source_appellation_lang."'"
-                        ."}";
-                        return $sa_code;
-                    }
-                );
+                $r_code .= mk_value($fixer, $r_root, 'sourceAppellation', $source_appellation,
+                $appellation_value_lang);
             }
 
             return $r_code;
