@@ -32,14 +32,18 @@ sub emit {
     my $perl = '';
 
     # classification
-    $perl .= mk_term($fixer, $fixer->var, 'objectClassificationWrap.classificationWrap.$append.classification',
-    $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,
-    $self->classification_type);
+    if (defined($self->classification)) {
+        $perl .= mk_term($fixer, $fixer->var, 'objectClassificationWrap.classificationWrap.$append.classification',
+                    $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,
+                    $self->classification_type);
+    }
 
     # objectWorkType
-    $perl .= mk_term($fixer, $fixer->var, 'objectClassificationWrap.objectWorkTypeWrap.$append.objectWorkType',
-    $self->object_work_type, $self->object_work_type_id, $self->lang, undef, $self->object_work_type_source,
-    $self->object_work_type_type);
+    if (defined($self->object_work_type)) {
+        $perl .= mk_term($fixer, $fixer->var, 'objectClassificationWrap.objectWorkTypeWrap.$append.objectWorkType',
+                    $self->object_work_type, $self->object_work_type_id, $self->lang, undef, $self->object_work_type_source,
+                    $self->object_work_type_type);
+    }
 
     return $perl;
 }

@@ -36,11 +36,24 @@ sub mk_descriptive_note{
                 ['$append', 'descriptiveNoteValue', '$append'],
                 sub {
                     my $dn_root = shift;
-                    return "${dn_root} = {"
-                    ."'_' => ${f_value},"
-                    ."'lang' => '".$lang."',"
-                    ."'label' => '".$label."'"
-                    ."};";
+
+                    my $dn_code = '';
+
+                    $dn_code .= "${dn_root} = {";
+
+                    if (defined($lang)) {
+                        $dn_code .= "'lang' => '".$lang."',";
+                    }
+
+                    if (defined($label)) {
+                        $dn_code .= "'label' => '".$label."',";
+                    }
+
+                    $dn_code .= "'_' => ${f_value}";
+
+                    $dn_code .= "};";
+
+                    return $dn_code;
                 }
             );
 

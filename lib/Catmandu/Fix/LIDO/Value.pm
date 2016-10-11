@@ -9,13 +9,20 @@ use Exporter qw(import);
 our @EXPORT_OK = qw(mk_value);
 
 sub mk_value {
-    my ($fixer, $root, $path, $value, $lang, $pref, $label, $type) = @_;
+    my ($fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string) = @_;
 
     my $new_path = $fixer->split_path($path);
     my $code = '';
     my $f_val = $fixer->generate_var();
-    $code .= "my ${f_val};";
-    $code .= declare_source($fixer, $value, $f_val);
+
+    if (!defined($is_string)) {
+        $is_string = 0;
+    }
+
+    if ($is_string == 0) {
+        $code .= "my ${f_val};";
+        $code .= declare_source($fixer, $value, $f_val);
+    }
 
     my $v_root = $fixer->var;
     if (defined ($root)) {
@@ -48,7 +55,11 @@ sub mk_value {
                     if (defined ($type)) {
                         $a_code .= "'type' => '".$type."',";
                     }
-                    $a_code .= "'_' => ${f_val}";
+                    if ($is_string == 0) {
+                        $a_code .= "'_' => ${f_val}";
+                    } else {
+                        $a_code .= "'_' => '".$value."'";
+                    }
                     $a_code .= "};";
                     return $a_code;
                 }

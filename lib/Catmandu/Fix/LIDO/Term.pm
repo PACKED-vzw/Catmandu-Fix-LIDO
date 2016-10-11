@@ -52,11 +52,23 @@ sub mk_term {
                         ['term', '$append'],
                         sub {
                             my $term_root = shift;
-                            return "${term_root} = {"
-                            ."'_' => ${f_term},"
-                            ."'lang' => '".$lang."',"
-                            ."'pref' => '".$pref."'"
-                            ."}";
+                            my $term_code = '';
+
+                            $term_code .= "${term_root} = {";
+
+                            if (defined($lang)) {
+                                $term_code .= "'lang' => '".$lang."',";
+                            }
+
+                            if (defined($pref)) {
+                                $term_code .= "'pref' => '".$pref."',";
+                            }
+
+                            $term_code .= "'_' => ${f_term}";
+
+                            $term_code .= "};";
+
+                            return $term_code;
                         }
                     );
             ##
@@ -73,11 +85,21 @@ sub mk_term {
                     sub {
                         my $concept_root = shift;
                         my $c_code = '';
-                        $c_code .= "${concept_root} = {"
-                        ."'_' => ${f_conceptid},"
-                        ."'pref' => '".$pref."',"
-                        ."'type' => '".$type."'"
-                        ."};";
+
+                        $c_code .= "${concept_root} = {";
+
+                        if (defined($pref)) {
+                            $c_code .= "'pref' => '".$pref."',";
+                        }
+
+                        if (defined($type)) {
+                            $c_code .= "'type' => '".$type."',";
+                        }
+
+                        $c_code .= "'_' => ${f_conceptid}";
+
+                        $code .= "};";
+                        
                         return $c_code;
                     }
                 );

@@ -35,11 +35,15 @@ sub emit {
 
             ##
             # inscriptionTranscription
-            $r_code .= mk_value($fixer, $r_root, '$append.inscriptionTranscription', $self->transcription, $self->lang, undef, $self->label, $self->type);
+            if (defined($self->transcription)) {
+                $r_code .= mk_value($fixer, $r_root, '$append.inscriptionTranscription', $self->transcription, $self->lang, undef, $self->label, $self->type);
+            }
 
             ##
             # inscriptionDescription.descriptiveNoteValue
-            $r_code .= mk_descriptive_note($fixer, $r_root, '$append.inscriptionDescription', $self->descriptive_note, $self->lang, $self->label);
+            if (defined($self->descriptive_note)) {
+                $r_code .= mk_descriptive_note($fixer, $r_root, '$append.inscriptionDescription', $self->descriptive_note, $self->lang, $self->label);
+            }
 
             return $r_code;
         }

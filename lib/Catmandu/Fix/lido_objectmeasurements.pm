@@ -4,6 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
+use Catmandu::Fix::LIDO::Value qw(mk_value);
 
 use strict;
 
@@ -28,23 +29,18 @@ sub emit {
         $fixer->var,
         $path,
         sub {
-            my $root = shift;
+            my $r_root = shift;
             my $r_code = '';
             ##
             # extent
-            $r_code .= $fixer->emit_create_path (
-                $root,
-                ['extentMeasurements', '$append', '_'],
-                sub {
-                    my $e_root = shift;
-                    return "${e_root} = '".$self->extent."';";
-                }
-            );
+            if (defined($self->extent)) {
+                $r_code .= mk_value($fixer, $r_root, 'extentMeasurements', $self->extent, undef, undef, undef, undef, 1);
+            }
             
             ##
             # type, unit, value
             $r_code .= $fixer->emit_create_path (
-                $root,
+                $r_root,
                 ['measurementsSet', '$append'],
                 sub {
                     my $m_root = shift;
@@ -52,39 +48,22 @@ sub emit {
 
                     ##
                     # type
-                    $m_code .= $fixer->emit_create_path(
-                        $m_root,
-                        ['measurementType', '$append', '_'],
-                        sub {
-                            my $t_root = shift;
-                            return "${t_root} = '".$self->type."'";
-                        }
-                    );
+                    if (defined($self->type)) {
+                        #$fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string
+                        $m_code .= mk_value($fixer, $m_root, 'measurementType', $self->type, undef, undef, undef, undef, 1);
+                    }
 
                     ##
                     # unit
-                    $m_code .= $fixer->emit_create_path(
-                        $m_root,
-                        ['measurementUnit', '$append', '_'],
-                        sub {
-                            my $t_root = shift;
-                            return "${t_root} = '".$self->unit."'";
-                        }
-                    );
+                    if (defined($self->unit)) {
+                        $m_code .= mk_value($fixer, $m_root, 'measurementUnit', $self->unit, undef, undef, undef, undef, 1);
+                    }
 
                     ##
                     # value
-                    my $f_val = $fixer->generate_var();
-                    $m_code .= "my ${f_val};";
-                    $m_code .= declare_source($fixer, $self->value, $f_val);
-                    $m_code .= $fixer->emit_create_path(
-                        $m_root,
-                        ['measurementValue', '$append', '_'],
-                        sub {
-                            my $t_root = shift;
-                            return "${t_root} = ${f_val}";
-                        }
-                    );
+                    if (defined($self->value)) {
+                        $m_code .= mk_value($fixer, $m_root, 'measurementValue', $self->value);
+                    }
 
                     return $m_code;
                 }

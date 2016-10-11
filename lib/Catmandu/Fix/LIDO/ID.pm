@@ -31,14 +31,25 @@ sub mk_id {
 		sub {
 			my $r_root = shift;
 			my $r_code = '';
-			$r_code .= "${r_root} = {"
-				."'_' => ${f_id},"
-				."'type' => '".$type."',";
+
+			$r_code .= "${r_root} = {";
+
+			if (defined($type)) {
+				$r_code .= "'type' => '".$type."',";
+			}
+
 			if (defined($source)) {
 				$r_code .= "'source' => '".$source."',";
 			}
-			$r_code .= "'label' => '".$label."'"
-				."};";
+
+			if (defined($label)) {
+				$r_code .= "'label' => '".$label."',";
+			}
+
+			$r_code .= "'_' => ${f_id}";
+
+			$r_code .= "};";
+			
 			return $r_code;
 		}
 	);
