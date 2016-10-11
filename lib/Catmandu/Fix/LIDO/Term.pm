@@ -17,7 +17,7 @@ our @EXPORT_OK = qw(mk_term);
 #has type      => ( fix_opt => 1, default => sub { 'global' } );
 
 sub mk_term {
-    my ($fixer, $path, $term, $conceptid, $lang, $pref, $source, $type) = @_;
+    my ($fixer, $root, $path, $term, $conceptid, $lang, $pref, $source, $type) = @_;
 
     my $code = '';
 
@@ -31,10 +31,15 @@ sub mk_term {
     $code .= "my ${f_term};";
     $code .= declare_source($fixer, $term, $f_term);
 
+    my $t_root = $fixer->var;
+    if (defined ($root)) {
+        $t_root = $root;
+    }
+
     ##
     # Create the term for Lido::XML ad the correct path
     $code .= $fixer->emit_create_path(
-        $fixer->var,
+        $t_root,
         $new_path,
         sub {
             my $p_root = shift;

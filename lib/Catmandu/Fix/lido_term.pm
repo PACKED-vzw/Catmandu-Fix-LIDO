@@ -27,7 +27,7 @@ sub emit {
 
     print($self->pref);
     
-    $perl .= mk_term($fixer, $self->path, $self->term, $self->conceptid,
+    $perl .= mk_term($fixer, $fixer->var, $self->path, $self->term, $self->conceptid,
     $self->lang, $self->pref, $self->source, $self->type);
 
     return $perl;
