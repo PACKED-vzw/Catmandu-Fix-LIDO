@@ -16,9 +16,9 @@ with 'Catmandu::Fix::Base';
 
 has path => (fix_arg => 1);
 has id_value => (fix_arg => 1);
-has type => (fix_opt => 1, default => sub { 'global' });
+has type => (fix_opt => 1);
 has source => (fix_opt => 1);
-has label => (fix_opt => 1, default => sub { 'dataPID' });
+has label => (fix_opt => 1);
 
 sub emit {
 	my ($self, $fixer) = @_;

@@ -21,10 +21,7 @@ sub mk_term {
 
     my $code = '';
 
-    my $h = $fixer->generate_var();
     my $new_path = $fixer->split_path($path);
-    $code .= "my ${h} = {};";
-
     ##
     # term
     my $f_term = $fixer->generate_var();
@@ -73,14 +70,14 @@ sub mk_term {
                     );
             ##
             # conceptID
-            if ( $conceptid ) {
+            if (defined($conceptid)) {
                 my $f_conceptid = $fixer->generate_var();
                 $p_code .= "my ${f_conceptid};";
                 $p_code .= declare_source($fixer, $conceptid, $f_conceptid);
                 ##
                 # Create the conceptID for Lido::XML
                 $p_code .= $fixer->emit_create_path(
-                    $p_root, # At the root level, use a bind or a move_field if you want it someplace else
+                    $p_root,
                     ['conceptID', '$append'],
                     sub {
                         my $concept_root = shift;
@@ -96,9 +93,13 @@ sub mk_term {
                             $c_code .= "'type' => '".$type."',";
                         }
 
+                        if (defined($source)) {
+                            $c_code .= "'source' => '".$source."',";
+                        }
+
                         $c_code .= "'_' => ${f_conceptid}";
 
-                        $code .= "};";
+                        $c_code .= "};";
                         
                         return $c_code;
                     }

@@ -16,8 +16,8 @@ with 'Catmandu::Fix::Base';
 
 has path => (fix_arg => 1);
 has value => (fix_arg => 1);
-has pref => (fix_opt => 1, default => sub { 'preferred' });
-has lang => (fix_opt => 1, default => sub { 'en' });
+has pref => (fix_opt => 1);
+has lang => (fix_opt => 1);
 has label => (fix_opt => 1);
 has type => (fix_opt => 1);
 

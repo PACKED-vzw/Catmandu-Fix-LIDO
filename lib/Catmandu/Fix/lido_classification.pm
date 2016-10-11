@@ -28,22 +28,35 @@ has lang                    => (fix_opt => 1, default => sub {'en'});
 sub emit {
     my ($self, $fixer) = @_;
 
-    my $path = ['objectClassificationWrap'];
+    my $path = ['descriptiveMetadata', 'objectClassificationWrap'];
     my $perl = '';
 
-    # classification
-    if (defined($self->classification)) {
-        $perl .= mk_term($fixer, $fixer->var, 'objectClassificationWrap.classificationWrap.$append.classification',
-                    $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,
-                    $self->classification_type);
-    }
+    $perl .= $fixer->emit_create_path(
+        $fixer->var,
+        $path,
+        sub {
+            my $r_root = shift;
+            my $r_code = '';
 
-    # objectWorkType
-    if (defined($self->object_work_type)) {
-        $perl .= mk_term($fixer, $fixer->var, 'objectClassificationWrap.objectWorkTypeWrap.$append.objectWorkType',
-                    $self->object_work_type, $self->object_work_type_id, $self->lang, undef, $self->object_work_type_source,
-                    $self->object_work_type_type);
-    }
+            ##
+            # classification
+            if (defined($self->classification)) {
+                $r_code .= mk_term($fixer, $r_root, 'classificationWrap.$append.classification',
+                            $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,
+                            $self->classification_type);
+            }
+
+            ##
+            # objectWorkType
+            if (defined($self->object_work_type)) {
+                $r_code .= mk_term($fixer, $r_root, 'objectWorkTypeWrap.$append.objectWorkType',
+                            $self->object_work_type, $self->object_work_type_id, $self->lang, undef, $self->object_work_type_source,
+                            $self->object_work_type_type);
+            }
+
+            return $r_code;
+        }
+    );
 
     return $perl;
 }

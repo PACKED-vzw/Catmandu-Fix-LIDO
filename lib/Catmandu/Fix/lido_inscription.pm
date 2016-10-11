@@ -18,8 +18,8 @@ with 'Catmandu::Fix::Base';
 has transcription => (fix_opt => 1);
 has descriptive_note => (fix_opt => 1);
 has type => (fix_opt => 1);
-has label => (fix_opt => 1, default => sub { 'transcription' });
-has lang => (fix_opt => 1, default => sub { 'en' });
+has label => (fix_opt => 1);
+has lang => (fix_opt => 1);
 
 sub emit {
     my ($self, $fixer) = @_;
@@ -28,7 +28,7 @@ sub emit {
 
     $perl .= $fixer->emit_create_path(
         $fixer->var,
-        ['objectIdentificationWrap', 'inscriptionsWrap', '$append', 'inscriptions'],
+        ['descriptiveMetadata', 'objectIdentificationWrap', 'inscriptionsWrap', '$append', 'inscriptions'],
         sub {
             my $r_root = shift;
             my $r_code = '';

@@ -16,8 +16,8 @@ with 'Catmandu::Fix::Base';
 
 has path => (fix_arg => 1);
 has value => (fix_arg => 1);
-has value_lang => (fix_opt => 1, default => sub { 'en' });
-has value_label => (fix_opt => 1, default => sub { 'description' });
+has lang => (fix_opt => 1);
+has label => (fix_opt => 1);
 
 sub emit {
     my ($self, $fixer) = @_;
@@ -33,7 +33,7 @@ sub emit {
             my $r_root = shift;
             my $r_code = '';
 
-            $r_code .= mk_descriptive_note($fixer, $r_root, '', $self->value, $self->value_lang, $self->value_label);
+            $r_code .= mk_descriptive_note($fixer, $r_root, '', $self->value, $self->lang, $self->label);
 
             return $r_code;
         }

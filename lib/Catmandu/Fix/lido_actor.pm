@@ -18,7 +18,7 @@ has id => (fix_arg => 1);
 has name => (fix_arg => 1);
 has id_label => (fix_opt => 1);
 has id_source => (fix_opt => 1);
-has nationality => (fix_opt => 1);
+has nationality => (fix_opt => 1); # Path
 has birthdate => (fix_opt => 1);
 has deathdate => (fix_opt => 1);
 has role => (fix_opt => 1);

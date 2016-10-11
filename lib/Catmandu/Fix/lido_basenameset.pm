@@ -16,10 +16,10 @@ with 'Catmandu::Fix::Base';
 
 has path => (fix_arg => 1);
 has value => (fix_arg => 1);
-has value_pref => (fix_opt => 1, default => sub { 'preferred' });
-has value_lang => (fix_opt => 1, default => sub { 'en' });
+has value_pref => (fix_opt => 1);
+has value_lang => (fix_opt => 1);
 has source => (fix_opt => 1);
-has source_lang => (fix_opt => 1, default => sub { 'en'}) ;
+has source_lang => (fix_opt => 1) ;
 
 sub emit {
     my ($self, $fixer) = @_;
