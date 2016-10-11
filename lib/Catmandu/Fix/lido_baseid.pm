@@ -22,18 +22,9 @@ has label => (fix_opt => 1, default => sub { 'dataPID' });
 
 sub emit {
 	my ($self, $fixer) = @_;
-	my $recid_path = $fixer->split_path($self->id_value);
-	my $recid_key = pop @$recid_path;
-	
-	my $new_path = $fixer->split_path($self->path);
-	
-	my $h = $fixer->generate_var();
 	my $perl = '';
-	$perl .= "my ${h};";
 	
-	$perl .= walk($fixer, $recid_path, $recid_key, $h);
-	
-	$perl .= mk_id($fixer, $new_path, $h, $self->source, $self->label, $self->type);
+	$perl .= mk_id($fixer, $fixer->var, $self->path, $self->id_value, $self->source, $self->label, $self->type);
 	
 	$perl;
 }
