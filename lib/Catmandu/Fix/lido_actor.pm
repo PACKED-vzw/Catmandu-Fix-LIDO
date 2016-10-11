@@ -17,12 +17,14 @@ has path => (fix_arg => 1);
 has id => (fix_arg => 1);
 has name => (fix_arg => 1);
 has id_label => (fix_opt => 1);
+has id_source => (fix_opt => 1);
 has nationality => (fix_opt => 1);
 has birthdate => (fix_opt => 1);
 has deathdate => (fix_opt => 1);
 has role => (fix_opt => 1);
 has role_id => (fix_opt => 1);
 has role_id_type => (fix_opt => 1);
+has role_id_source => (fix_opt => 1);
 has qualifier => (fix_opt => 1);
 
 sub emit {
@@ -41,7 +43,7 @@ sub emit {
             # actorID
             # $fixer, $root, $path, $id, $source, $label, $type
             if (defined($self->id)) {
-                $r_code .= mk_id($fixer, $r_root, 'actorInRole.actor.$append.actorID', $self->id, undef, $self->id_label, undef);
+                $r_code .= mk_id($fixer, $r_root, 'actorInRole.actor.$append.actorID', $self->id, $self->id_source, $self->id_label, undef);
             }
 
             ##
@@ -87,7 +89,7 @@ sub emit {
             ##
             # roleActor
             if (defined($self->role)) 
-                {$r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.$append.roleActor', $self->role, $self->role_id, undef, undef, undef, $self->role_id_type);
+                {$r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.$append.roleActor', $self->role, $self->role_id, undef, undef, $self->role_id_source, $self->role_id_type);
             }
             
             ##
