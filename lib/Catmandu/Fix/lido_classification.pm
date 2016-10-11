@@ -41,7 +41,7 @@ sub emit {
             ##
             # classification
             if (defined($self->classification)) {
-                $r_code .= mk_term($fixer, $r_root, 'classificationWrap.$append.classification',
+                $r_code .= mk_term($fixer, $r_root, 'classificationWrap.classification',
                             $self->classification, $self->classification_id, $self->lang, 'preferred', $self->classification_source,
                             $self->classification_type);
             }
@@ -49,7 +49,7 @@ sub emit {
             ##
             # objectWorkType
             if (defined($self->object_work_type)) {
-                $r_code .= mk_term($fixer, $r_root, 'objectWorkTypeWrap.$append.objectWorkType',
+                $r_code .= mk_term($fixer, $r_root, 'objectWorkTypeWrap.objectWorkType',
                             $self->object_work_type, $self->object_work_type_id, $self->lang, undef, $self->object_work_type_source,
                             $self->object_work_type_type);
             }

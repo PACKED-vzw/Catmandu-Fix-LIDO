@@ -43,7 +43,7 @@ sub emit {
             # actorID
             # $fixer, $root, $path, $id, $source, $label, $type
             if (defined($self->id)) {
-                $r_code .= mk_id($fixer, $r_root, 'actorInRole.actor.$append.actorID', $self->id, $self->id_source, $self->id_label, undef);
+                $r_code .= mk_id($fixer, $r_root, 'actorInRole.actor.actorID', $self->id, $self->id_source, $self->id_label, undef);
             }
 
             ##
@@ -51,14 +51,14 @@ sub emit {
             # $fixer, $root, $path, $appellation_value, $appellation_value_lang, $appellation_value_type,
             # $appellation_value_pref, $source_appellation, $source_appellation_lang
             if (defined($self->name)) {
-                $r_code .= mk_nameset($fixer, $r_root, 'actorInRole.actor.$append.nameActorSet', $self->name);
+                $r_code .= mk_nameset($fixer, $r_root, 'actorInRole.actor.nameActorSet', $self->name);
             }
 
             ##
             # nationalityActor
             # $fixer, $root, $path, $term, $conceptid, $lang, $pref, $source, $type
             if (defined($self->nationality)) {
-                $r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.$append.nationalityActor', $self->nationality);
+                $r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.nationalityActor', $self->nationality);
             }
 
             ##
@@ -89,14 +89,14 @@ sub emit {
             ##
             # roleActor
             if (defined($self->role)) 
-                {$r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.$append.roleActor', $self->role, $self->role_id, undef, undef, $self->role_id_source, $self->role_id_type);
+                {$r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.roleActor', $self->role, $self->role_id, undef, undef, $self->role_id_source, $self->role_id_type);
             }
             
             ##
             # attributionQualifierActor
             # $fixer, $root, $path, $value, $lang, $pref, $label, $type
             if (defined($self->qualifier)) {
-                $r_code .= mk_value($fixer, $r_root, 'actorInRole.actor.$append.attributionQualifierActor', $self->qualifier);
+                $r_code .= mk_value($fixer, $r_root, 'actorInRole.actor.attributionQualifierActor', $self->qualifier);
             }
             
             return $r_code;

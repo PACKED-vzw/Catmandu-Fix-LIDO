@@ -28,7 +28,7 @@ sub emit {
 
     $perl .= $fixer->emit_create_path(
         $fixer->var,
-        ['descriptiveMetadata', 'objectIdentificationWrap', 'inscriptionsWrap', '$append', 'inscriptions'],
+        ['descriptiveMetadata', 'objectIdentificationWrap', 'inscriptionsWrap', 'inscriptions'],
         sub {
             my $r_root = shift;
             my $r_code = '';

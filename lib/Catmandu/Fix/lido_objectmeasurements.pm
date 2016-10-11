@@ -23,7 +23,7 @@ sub emit {
     my ($self, $fixer) = @_;
     my $perl = '';
 
-    my $path = ['descriptiveMetadata', 'objectIdentificationWrap', 'objectMeasurementsWrap', '$append', 'objectMeasurementsSet', 'objectMeasurements'];
+    my $path = ['descriptiveMetadata', 'objectIdentificationWrap', 'objectMeasurementsWrap', 'objectMeasurementsSet', 'objectMeasurements'];
 
     $perl .= $fixer->emit_create_path(
         $fixer->var,
@@ -41,7 +41,7 @@ sub emit {
             # type, unit, value
             $r_code .= $fixer->emit_create_path (
                 $r_root,
-                ['measurementsSet', '$append'],
+                ['measurementsSet'],
                 sub {
                     my $m_root = shift;
                     my $m_code = '';
