@@ -4,6 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Value qw(mk_value);
+use Catmandu::Fix::LIDO::Utility qw(declare_source);
 use Data::Dumper qw(Dumper);
 
 use strict;
@@ -30,13 +31,41 @@ sub emit {
             # earliestDate
             # $fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string
             if (defined($self->earliest_date)) {
-                $r_code .= mk_value($fixer, $r_root, 'earliestDate', $self->earliest_date);
+                $r_code .= $fixer->emit_create_path(
+                    $r_root,
+                    ['earliestDate'],
+                    sub {
+                        my $d_root = shift;
+                        my $d_code = '';
+
+                        my $d_value = $fixer->generate_var();
+                        $d_code .= "my ${d_value};";
+                        $d_code .= declare_source($fixer, $self->earliest_date, $d_value);
+
+                        $d_code .= "${d_root} = ${d_value};";
+                        return $d_code;
+                        }
+                );
             }
 
             ##
             # latestDate
             if (defined($self->latest_date)) {
-                $r_code .= mk_value($fixer, $r_root, 'latestDate', $self->latest_date);
+                $r_code .= $fixer->emit_create_path(
+                    $r_root,
+                    ['latestDate'],
+                    sub {
+                        my $d_root = shift;
+                        my $d_code = '';
+
+                        my $d_value = $fixer->generate_var();
+                        $d_code .= "my ${d_value};";
+                        $d_code .= declare_source($fixer, $self->latest_date, $d_value);
+
+                        $d_code .= "${d_root} = ${d_value};";
+                        return $d_code;
+                        }
+                );
             }
 
             return $r_code;

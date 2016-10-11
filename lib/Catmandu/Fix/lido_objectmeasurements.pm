@@ -62,7 +62,21 @@ sub emit {
                     ##
                     # value
                     if (defined($self->value)) {
-                        $m_code .= mk_value($fixer, $m_root, 'measurementValue', $self->value);
+                        $m_code .= $fixer->emit_create_path(
+                            $m_root,
+                            ['measurementValue'],
+                            sub {
+                                my $v_root = shift;
+                                my $v_code = '';
+
+                                my $m_value = $fixer->generate_var();
+                                $v_code .= "my ${m_value};";
+                                $v_code .= declare_source($fixer, $self->value, $m_value);
+
+                                $v_code .= "${v_root} = ${m_value};";
+                                return $v_code;
+                            }
+                        );
                     }
 
                     return $m_code;
