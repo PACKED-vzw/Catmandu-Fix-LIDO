@@ -10,15 +10,17 @@ use Exporter qw(import);
 our @EXPORT_OK = qw(mk_nameset);
 
 sub mk_nameset {
-    my ($fixer, $path, $appellation_value, $appellation_value_lang, $appellation_value_type, $appellation_value_pref, $source_appellation, $source_appellation_lang) = @_;
+    my ($fixer, $root, $path, $appellation_value, $appellation_value_lang, $appellation_value_type, $appellation_value_pref, $source_appellation, $source_appellation_lang) = @_;
     my $code = '';
 
-    my $h = $fixer->generate_var();
     my $new_path = $fixer->split_path($path);
-    $code .= "my ${h} = {};";
 
     my $f_av = $fixer->generate_var();
     my $f_sa = $fixer->generate_var();
+    my $a_root = $fixer->var;
+    if (defined($root)) {
+        $a_root = $root;
+    }
 
     ##
     # appellationValue
@@ -35,7 +37,7 @@ sub mk_nameset {
     }
 
     $code .= $fixer->emit_create_path(
-        $fixer->var,
+        $a_root,
         $new_path,
         sub {
             my $r_root = shift;
