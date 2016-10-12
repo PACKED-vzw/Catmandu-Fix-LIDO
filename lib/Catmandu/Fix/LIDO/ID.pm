@@ -7,9 +7,20 @@ use Data::Dumper qw(Dumper);
 
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
 
-our @EXPORT_OK = qw(mk_id);
+our @EXPORT_OK = qw(emit_base_id);
 
-sub mk_id {
+##
+# Emit the code that generates a lido id node in a path. The node is attached directly to the path, so you
+# must specify the name of the id (e.g. lidoRecID) in the $path.
+# @param $fixer
+# @param $root
+# @param $path
+# @param $id
+# @param $source
+# @param $label
+# @param $type
+# @return $fixer emit code
+sub emit_base_id {
 	my ($fixer, $root, $path, $id, $source, $label, $type) = @_;
 
 	my $new_path = $fixer->split_path($path);
@@ -58,3 +69,27 @@ sub mk_id {
 };
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::LIDO::ID::emit_id
+
+=head1 SYNOPSIS
+
+    emit_id(
+        $fixer, # The fixer object from the calling emit function inside the calling Fix (required).
+        $root, # The root path (string) from which the path parameter must be created (required).
+		$path, # The path (string) for the id - must include the name of the id node (required).
+        $id, # The value of the id node, as a string path (required).
+        $source, # Source attribute, string.
+		$label, # Label attribute, string.
+		$type # Type attribute, string.
+    )
+
+=head1 DESCRIPTION
+
+This function will generate the necessary emit code to generate a C<id> node in a given path. The node is attached directly to the path, so you must specify the name of the id (e.g. lidoRecID) in the $path.

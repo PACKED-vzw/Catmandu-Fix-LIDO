@@ -6,43 +6,14 @@ use Exporter qw(import);
 
 our @EXPORT_OK = qw(walk declare_source);
 
-
-sub mk_append {
-	my ($fixer, $root, $path) = @_;
-	my $perl = '';
-	push @$path, '$append';
-	$perl .= $fixer->emit_create_path(
-		$root,
-		$path,
-		sub {
-			my $local_root = shift;
-			return "${local_root} = {};";
-		}
-	);
-	return $perl;
-}
-
-##
-# Make a generic wrap. A wrap is non-repeatable and thus is always a hash.
-# You can add extra fields to this hash using do with(path); add_field(); end
-sub mk_wrap {
-    my ($fixer, $root, $path) = @_;
-    my $perl = '';
-    $perl .= $fixer->emit_create_path(
-        $root,
-        $path,
-        sub {
-            my $local_root = shift;
-            return "${local_root} = {};";
-        }
-    );
-    return $perl;
-}
-
 ##
 # For a source $var, that is a path parameter to a fix,
 # use walk() to get the value and return the generated
 # $perl code.
+# @param $fixer
+# @param $var
+# @param $declared_var
+# @return $fixer emit code
 sub declare_source {
 	my ( $fixer, $var, $declared_var ) = @_;
 
@@ -60,6 +31,11 @@ sub declare_source {
 # $h must be declared before calling walk()
 # This has the effect of assigning $val (the value of the leaf
 # node you're walking to) to $h, so you can use $h in your fix.
+# @param $fixer
+# @param $path
+# @param $key
+# @param $h
+# @return $fixer emit code
 sub walk {
 	my ($fixer, $path, $key, $h) = @_;
 	

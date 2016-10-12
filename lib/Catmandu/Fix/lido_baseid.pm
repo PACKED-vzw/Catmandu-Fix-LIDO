@@ -4,7 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk);
-use Catmandu::Fix::LIDO::ID qw(mk_id);
+use Catmandu::Fix::LIDO::ID qw(emit_base_id);
 
 use strict;
 
@@ -24,7 +24,7 @@ sub emit {
 	my ($self, $fixer) = @_;
 	my $perl = '';
 	
-	$perl .= mk_id($fixer, $fixer->var, $self->path, $self->id_value, $self->source, $self->label, $self->type);
+	$perl .= emit_base_id($fixer, $fixer->var, $self->path, $self->id_value, $self->source, $self->label, $self->type);
 	
 	$perl;
 }

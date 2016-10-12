@@ -3,7 +3,7 @@ package Catmandu::Fix::lido_date;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Catmandu::Fix::LIDO::Value qw(mk_value mk_simple);
+use Catmandu::Fix::LIDO::Value qw(emit_base_value emit_simple_value);
 use Catmandu::Fix::LIDO::Utility qw(declare_source);
 use Data::Dumper qw(Dumper);
 
@@ -31,13 +31,13 @@ sub emit {
             # earliestDate
             # $fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string
             if (defined($self->earliest_date)) {
-                $r_code .= mk_simple($fixer, $r_root, 'earliestDate', $self->earliest_date);
+                $r_code .= emit_simple_value($fixer, $r_root, 'earliestDate', $self->earliest_date);
             }
 
             ##
             # latestDate
             if (defined($self->latest_date)) {
-                $r_code .= mk_simple($fixer, $r_root, 'latestDate', $self->latest_date);
+                $r_code .= emit_simple_value($fixer, $r_root, 'latestDate', $self->latest_date);
             }
 
             return $r_code;

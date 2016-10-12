@@ -6,9 +6,24 @@ use strict;
 
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(mk_value mk_simple);
+our @EXPORT_OK = qw(emit_base_value emit_simple_value);
 
-sub mk_simple {
+
+##
+# Provide emit code to generate a simple LIDO node consisting of a key => value pair, with optional attributes.
+# The key must be part of the $path.
+# This function must be used when the node can not be repeated.
+# @param $fixer
+# @param $root
+# @param $path
+# @param $value
+# @param $lang
+# @param $pref
+# @param $label
+# @param $type
+# @param $is_string
+# @return $fixer emit code
+sub emit_simple_value {
     my ($fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string) = @_;
 
     my $new_path = $fixer->split_path($path);
@@ -65,7 +80,21 @@ sub mk_simple {
     return $code;
 }
 
-sub mk_value {
+##
+# Provide emit code to generate a simple LIDO node consisting of a key => value pair, with optional attributes.
+# The key must be part of the $path.
+# This function must be used when the node can be repeated.
+# @param $fixer
+# @param $root
+# @param $path
+# @param $value
+# @param $lang
+# @param $pref
+# @param $label
+# @param $type
+# @param $is_string
+# @return $fixer emit code
+sub emit_base_value {
     my ($fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string) = @_;
 
     my $new_path = $fixer->split_path($path);
@@ -130,3 +159,34 @@ sub mk_value {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::LIDO::Value::emit_value & Catmandu::Fix::LIDO::Value::emit_simple_value
+
+=head1 SYNOPSIS
+
+C<emit_value> and C<emit_simple_value> have the same calling syntax.
+
+    emit_value(
+        $fixer, # The fixer object from the calling emit function inside the calling Fix (required).
+        $root, # The root path (string) from which the path parameter must be created (required).
+        $path, # The path (string) for the value - must include the name of the value node (required).
+        $value, # Path (string) to the value of the component (required).
+        $lang, # xml:lang attribute, string.
+        $pref, # pref attribute, string.
+        $label, # label attribute, string
+        $source, # source attribute, string.
+        $type, # type attribute, string.
+        $is_string # set to 1 if $value is not a path, but a string, so $value is directly interpolated in the emit code.
+    )
+
+=head1 DESCRIPTION
+
+C<emit_value> and C<emit_simple_value> will generate the necessary emit code to generate a node in a given path. The node is attached directly to the path, so you must specify the name of the node (e.g. category) in the $path.
+
+Use C<emit_value> when the node is repeatable and C<emit_simple_value> when it isn't.

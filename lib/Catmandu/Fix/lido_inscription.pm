@@ -4,8 +4,8 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
-use Catmandu::Fix::LIDO::DescriptiveNote qw(mk_descriptive_note);
-use Catmandu::Fix::LIDO::Value qw(mk_value);
+use Catmandu::Fix::LIDO::DescriptiveNote qw(emit_descriptive_note);
+use Catmandu::Fix::LIDO::Value qw(emit_base_value);
 
 use strict;
 
@@ -36,13 +36,13 @@ sub emit {
             ##
             # inscriptionTranscription
             if (defined($self->transcription)) {
-                $r_code .= mk_value($fixer, $r_root, '$append.inscriptionTranscription', $self->transcription, $self->lang, undef, $self->label, $self->type);
+                $r_code .= emit_base_value($fixer, $r_root, '$append.inscriptionTranscription', $self->transcription, $self->lang, undef, $self->label, $self->type);
             }
 
             ##
             # inscriptionDescription.descriptiveNoteValue
             if (defined($self->descriptive_note)) {
-                $r_code .= mk_descriptive_note($fixer, $r_root, '$last.inscriptionDescription', $self->descriptive_note, $self->lang, $self->label);
+                $r_code .= emit_descriptive_note($fixer, $r_root, '$last.inscriptionDescription', $self->descriptive_note, $self->lang, $self->label);
             }
 
             return $r_code;

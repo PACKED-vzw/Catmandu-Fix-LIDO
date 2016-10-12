@@ -4,7 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
-use Catmandu::Fix::LIDO::Value qw(mk_value);
+use Catmandu::Fix::LIDO::Value qw(emit_base_value);
 
 use strict;
 
@@ -34,7 +34,7 @@ sub emit {
             ##
             # extent
             if (defined($self->extent)) {
-                $r_code .= mk_value($fixer, $r_root, 'extentMeasurements', $self->extent, undef, undef, undef, undef, 1);
+                $r_code .= emit_base_value($fixer, $r_root, 'extentMeasurements', $self->extent, undef, undef, undef, undef, 1);
             }
             
             ##
@@ -50,13 +50,13 @@ sub emit {
                     # type
                     if (defined($self->type)) {
                         #$fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string
-                        $m_code .= mk_value($fixer, $m_root, 'measurementType', $self->type, undef, undef, undef, undef, 1);
+                        $m_code .= emit_base_value($fixer, $m_root, 'measurementType', $self->type, undef, undef, undef, undef, 1);
                     }
 
                     ##
                     # unit
                     if (defined($self->unit)) {
-                        $m_code .= mk_value($fixer, $m_root, 'measurementUnit', $self->unit, undef, undef, undef, undef, 1);
+                        $m_code .= emit_base_value($fixer, $m_root, 'measurementUnit', $self->unit, undef, undef, undef, undef, 1);
                     }
 
                     ##

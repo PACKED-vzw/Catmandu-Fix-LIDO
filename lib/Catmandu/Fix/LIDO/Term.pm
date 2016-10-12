@@ -6,7 +6,7 @@ use strict;
 
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(mk_term);
+our @EXPORT_OK = qw(emit_term);
 
 #has path      => ( fix_arg => 1);
 #has term      => ( fix_arg => 1 );
@@ -16,7 +16,19 @@ our @EXPORT_OK = qw(mk_term);
 #has source    => ( fix_opt => 1, default => sub { 'AAT' } );
 #has type      => ( fix_opt => 1, default => sub { 'global' } );
 
-sub mk_term {
+##
+# Emit the code to generate a LIDO term node that is directly attached to the $path, so you have to provide the name for the term (e.g. category) as part of the path.
+# @param $fixer
+# @param $root
+# @param $path
+# @param $term
+# @param $conceptid
+# @param $lang
+# @param $pref
+# @param $source
+# @param $type
+# @return $fixer emit code
+sub emit_term {
     my ($fixer, $root, $path, $term, $conceptid, $lang, $pref, $source, $type) = @_;
 
     my $code = '';
@@ -114,3 +126,30 @@ sub mk_term {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::LIDO::Term::emit_term
+
+=head1 SYNOPSIS
+
+    emit_term(
+        $fixer, # The fixer object from the calling emit function inside the calling Fix (required).
+        $root, # The root path (string) from which the path parameter must be created (required).
+        $path, # The path (string) for the nameset - must include the name of the nameset node (required).
+        $term, # Path (string) to the value of the term component (required).
+        $conceptid, # Path (string) to the value of the conceptID component.
+        $lang, # xml:lang attribute, string.
+        $pref, # pref attribute, string.
+        $source, # source attribute, string.
+        $type # type attribute, string.
+        
+    )
+
+=head1 DESCRIPTION
+
+This function will generate the necessary emit code to generate a C<term> node in a given path consisting of C<term> and C<conceptID>. The node is attached directly to the path, so you must specify the name of the term (e.g. category) in the $path.

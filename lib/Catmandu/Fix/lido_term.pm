@@ -3,7 +3,7 @@ package Catmandu::Fix::lido_term;
 use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
-use Catmandu::Fix::LIDO::Term qw(mk_term);
+use Catmandu::Fix::LIDO::Term qw(emit_term);
 use Data::Dumper qw(Dumper);
 
 use strict;
@@ -25,7 +25,7 @@ sub emit {
 
     my $perl = '';
     
-    $perl .= mk_term($fixer, $fixer->var, $self->path, $self->term, $self->conceptid,
+    $perl .= emit_term($fixer, $fixer->var, $self->path, $self->term, $self->conceptid,
     $self->lang, $self->pref, $self->source, $self->type);
 
     return $perl;

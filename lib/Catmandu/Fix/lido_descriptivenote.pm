@@ -4,7 +4,7 @@ use Catmandu::Sane;
 use Moo;
 use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
-use Catmandu::Fix::LIDO::DescriptiveNote qw(mk_descriptive_note);
+use Catmandu::Fix::LIDO::DescriptiveNote qw(emit_descriptive_note);
 
 use strict;
 
@@ -33,7 +33,7 @@ sub emit {
             my $r_root = shift;
             my $r_code = '';
 
-            $r_code .= mk_descriptive_note($fixer, $r_root, '', $self->value, $self->lang, $self->label);
+            $r_code .= emit_descriptive_note($fixer, $r_root, '', $self->value, $self->lang, $self->label);
 
             return $r_code;
         }
