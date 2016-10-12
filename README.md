@@ -30,7 +30,7 @@ The fixes consist of two types: six building block fixes, that create generic LI
 
 It is possible to use only the six block fixes to generate an entire, valid, LIDO record, but for ease of use the four specific fixes have been provided to lighten the load in your `.fix` file.
 
-To use the block fixes, you must provide the path where they must appear. Familiarity with the LIDO standard is thus required.
+To use the block fixes, you must provide the path where they should appear.
 
 Note that all parameters prefixed by `-` are optional.
 
