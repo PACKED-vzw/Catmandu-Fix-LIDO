@@ -6,7 +6,7 @@ use Catmandu::Fix::Has;
 use Catmandu::Fix::LIDO::Term qw(mk_term);
 use Catmandu::Fix::LIDO::ID qw(mk_id);
 use Catmandu::Fix::LIDO::Nameset qw(mk_nameset);
-use Catmandu::Fix::LIDO::Value qw(mk_value);
+use Catmandu::Fix::LIDO::Value qw(mk_value mk_simple);
 use Data::Dumper qw(Dumper);
 
 use strict;
@@ -65,7 +65,7 @@ sub emit {
             # vitalDatesActor
             $r_code .= $fixer->emit_create_path(
                 $r_root,
-                ['actorInRole', 'actor', '$append', 'vitalDatesActor'],
+                ['actorInRole', 'actor', 'vitalDatesActor'],
                 sub {
                     my $d_root = shift;
                     my $d_code = '';
@@ -73,13 +73,13 @@ sub emit {
                     ##
                     # earliestDate
                     if (defined($self->birthdate)) {
-                        $d_code .= mk_value($fixer, $d_root, 'earliestDate', $self->birthdate);
+                        $d_code .= mk_simple($fixer, $d_root, 'earliestDate', $self->birthdate);
                     }
 
                     ##
                     # latestDate
                     if (defined($self->deathdate)) {
-                        $d_code .= mk_value($fixer, $d_root, 'latestDate', $self->deathdate);
+                        $d_code .= mk_simple($fixer, $d_root, 'latestDate', $self->deathdate);
                     }
 
                     return $d_code;
@@ -88,15 +88,15 @@ sub emit {
 
             ##
             # roleActor
-            if (defined($self->role)) 
-                {$r_code .= mk_term($fixer, $r_root, 'actorInRole.actor.roleActor', $self->role, $self->role_id, undef, undef, $self->role_id_source, $self->role_id_type);
+            if (defined($self->role)) {
+                $r_code .= mk_term($fixer, $r_root, 'actorInRole.roleActor', $self->role, $self->role_id, undef, undef, $self->role_id_source, $self->role_id_type);
             }
             
             ##
             # attributionQualifierActor
             # $fixer, $root, $path, $value, $lang, $pref, $label, $type
             if (defined($self->qualifier)) {
-                $r_code .= mk_value($fixer, $r_root, 'actorInRole.actor.attributionQualifierActor', $self->qualifier);
+                $r_code .= mk_value($fixer, $r_root, 'actorInRole.attributionQualifierActor', $self->qualifier);
             }
             
             return $r_code;
@@ -107,3 +107,114 @@ sub emit {
 }
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+Catmandu::Fix::lido_actor - create a LIDO actorInRole node at a specified path
+
+=head1 SYNOPSIS
+    lido_actor(
+        path,
+        id,
+        name,
+        id_label: actorID.label,
+        id_source: actorID.source,
+        nationality: nationalityActor,
+        birthdate: vitalDatesActor.earliestDate,
+        deathdate: vitalDatesActor.latestDate,
+        role: roleActor.term,
+        role_id: roleActor.conceptID,
+        role_id_type: roleActor.conceptID.type,
+        role_id_source: roleActor.conceptID.source,
+        qualifier: attributionQualifierActor
+    )
+
+=head1 Description
+C<lido_actor()> will create an actorInRole node in the path specified by the C<path> parameter.
+
+It requires the parameters C<path>, C<id> and C<name> to be present as paths.
+
+The following parameters are optional, but must be paths:
+
+=over
+
+=item C<nationality>
+
+=item C<birthdate>
+
+=item C<deathdate>
+
+=item C<role>
+
+=item C<qualifier>
+
+=back
+
+All other optional parameters are strings:
+
+=over
+
+=item C<id_label>
+
+=item C<id_source>
+
+=item C<role_id>
+
+=item C<role_id_type>
+
+=item C<role_id_source>
+
+=back
+
+=head1 Example
+
+=head2 Fix
+
+    lido_actor(
+        descriptiveMetadata.eventWrap.eventSet.$last.event.eventActor,
+        recordList.record.creator.id,
+        recordList.record.creator.name,
+        -id_label: 'priref',
+        -nationality: recordList.record.creator.nationality,
+        -birthdate: recordList.record.creator.date_of_birth,
+        -deathdate: recordList.record.creator.date_of_death,
+        -role: recordList.record.role.name,
+        -role_id: recordList.record.role.id,
+        -role_id_type: 'aat',
+        -qualifier: recordList.record.role.name
+    )
+
+=head2 Result
+
+    <lido:descriptiveMetadata>
+        <lido:eventWrap>
+            <lido:eventSet>
+                <lido:event>
+                    <lido:eventActor>
+                        <lido:actorInRole>
+                            <lido:actor>
+                                <lido:actorID lido:label="priref">123</lido:actorID>
+                                <lido:nameActorSet>
+                                    <lido:appellationValue>Jonghe, Jan Baptiste De</lido:appellationValue>
+                                </lido:nameActorSet>
+                                <lido:nationalityActor>
+                                    <lido:term>Belgisch</lido:term>
+                                </lido:nationalityActor>
+                                <lido:vitalDatesActor>
+                                    <lido:earliestDate>1750</lido:earliestDate>
+                                    <lido:latestDate>1821</lido:latestDate>
+                                </lido:vitalDatesActor>
+                            </lido:actor>
+                            <lido:roleActor>
+                                <lido:conceptID lido:type="aat">123</lido:conceptID>
+                                <lido:term>Creator</lido:term>
+                            </lido:roleActor>
+                            <lido:attributionQualifierActor>Created</lido:attributionQualifierActor>
+                        </lido:actorInRole>
+                    </lido:eventActor>
+                </lido:event>
+            </lido:eventSet>
+        </lido:eventWrap>
+    </lido:descriptiveMetadata>
