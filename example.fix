@@ -1,0 +1,257 @@
+remove_field(diagnostic)
+remove_field(temp)
+remove_field('xmlns:xsi')
+remove_field('xsi:noNamespaceSchemaLocation')
+add_field(gen_cat, 'Paintings')
+add_field(gen_id, '123')
+add_field(gen_link, 'http://mskgent.be')
+add_field(gen_desc, 'Een generieke beschrijving.')
+add_field(gen_int, 15)
+add_field(gen_name, 'Generieke naam')
+add_field(gen_event, 'Production')
+
+lido_baseid(
+    lidoRecID,
+    recordList.record.object_number,
+    -source: 'Museum voor Schone Kunsten Gent',
+    -type: 'global',
+    -label: 'dataPID'
+)
+
+lido_baseid(
+    objectPublishedID,
+    recordList.record.object_number,
+    -source: 'Museum voor Schone Kunsten Gent',
+    -type: 'global',
+    -label: 'workPID'
+)
+
+lido_term(
+    category,
+    gen_cat,
+    -conceptid: gen_id,
+    -type: global,
+    -source: 'cidoc-crm',
+)
+
+##
+# Classification
+lido_classification (
+    recordList.record.object_name,
+    gen_cat,
+    -object_work_type_id: gen_id,
+    -classification_id: gen_id,
+    -object_work_type_type: global,
+    -object_work_type_source: adlib,
+    -classification_type: global,
+    -classification_source: adlib,
+    -lang: nl
+)
+
+##
+# Identification
+lido_basenameset(
+    descriptiveMetadata.objectIdentificationWrap.titleWrap.titleSet,
+    recordList.record.title,
+    -value_lang: nl,
+    -value_pref: preferred
+)
+lido_baseid(
+    descriptiveMetadata.objectIdentificationWrap.repositoryWrap.repositorySet.repositoryName.legalBodyID,
+    gen_id,
+    -type: global,
+    -source: isil
+)
+lido_basenameset(
+    descriptiveMetadata.objectIdentificationWrap.repositoryWrap.repositorySet.repositoryName.legalBodyName,
+    recordList.record.institution_name
+)
+lido_basevalue(
+    descriptiveMetadata.objectIdentificationWrap.repositoryWrap.repositorySet.repositoryName.legalBodyWeblink,
+    gen_link
+)
+lido_baseid(
+    descriptiveMetadata.objectIdentificationWrap.repositoryWrap.repositorySet.workID,
+    recordList.record.object_number
+)
+lido_descriptivenote(
+    descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet,
+    gen_desc
+)
+lido_objectmeasurements(
+    'hoogte',
+    'hoogte',
+    'cm',
+    gen_int
+)
+lido_inscription(
+    -transcription: gen_desc,
+    -descriptive_note: gen_desc,
+    -label: inscription,
+    -lang: nl
+)
+
+##
+# Relation
+lido_basevalue(
+    descriptiveMetadata.objectRelationWrap.subjectWrap.subjectSet.displaySubject,
+    recordList.record.object_name
+)
+lido_term(
+    descriptiveMetadata.objectRelationWrap.subjectWrap.subjectSet.subject.subjectConcept,
+    recordList.record.object_name,
+    -conceptid: gen_id,
+    -type: iconograpy,
+    -label: hoofdmotief,
+    -lang: nl,
+    -source:wikidata
+)
+lido_basevalue(
+    descriptiveMetadata.objectRelationWrap.relatedWorksWrap.relatedWorkSet.relatedWork.displayObject,
+    gen_name
+)
+lido_baseid(
+    descriptiveMetadata.objectRelationWrap.relatedWorksWrap.relatedWorkSet.relatedWork.object.objectID,
+    gen_id,
+    -type: global,
+    -source: adlib
+)
+lido_basevalue(
+    descriptiveMetadata.objectRelationWrap.relatedWorksWrap.relatedWorkSet.relatedWork.object.objectNote,
+    gen_desc
+)
+lido_term(
+    descriptiveMetadata.objectRelationWrap.relatedWorksWrap.relatedWorkSet.relatedWorkRelType,
+    gen_desc
+)
+
+##
+# Event
+lido_term(
+    descriptiveMetadata.eventWrap.eventSet.$append.event.eventType,
+    gen_event
+)
+lido_actor(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventActor,
+    gen_id,
+    recordList.record.creator,
+    -id_label: priref,
+    -nationality: gen_name,
+    -birthdate: recordList.record.production_date_start,
+    -deathdate: recordList.record.production_date_start,
+    -role: gen_event,
+    -role_id: gen_id,
+    -role_id_type: aat,
+    -qualifier: gen_event
+)
+lido_term(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.roleInEvent,
+    gen_event
+)
+lido_basevalue(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventDate.displayDate,
+    recordList.record.production_date_start
+)
+lido_date(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventDate.date,
+    -earliest_date: recordList.record.production_date_start
+)
+lido_baseid(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventPlace.place.placeID,
+    gen_id
+)
+lido_basenameset(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventPlace.place.namePlaceSet,
+    gen_name
+)
+lido_term(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventMaterialsTech.materialsTech.termMaterialsTech,
+    gen_event,
+    -conceptid: gen_id
+)
+lido_descriptivenote(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventDescriptionSet,
+    gen_desc
+)
+
+##
+# Event2
+lido_term(
+    descriptiveMetadata.eventWrap.eventSet.$append.event.eventType,
+    gen_event
+)
+lido_actor(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventActor,
+    gen_id,
+    recordList.record.creator,
+    -id_label: priref,
+    -nationality: gen_name,
+    -birthdate: recordList.record.production_date_start,
+    -deathdate: recordList.record.production_date_start,
+    -role: gen_event,
+    -role_id: gen_id,
+    -role_id_type: aat,
+    -qualifier: gen_event
+)
+lido_term(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.roleInEvent,
+    gen_event
+)
+lido_basevalue(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventDate.displayDate,
+    recordList.record.production_date_start
+)
+lido_date(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventDate.date,
+    -earliest_date: recordList.record.production_date_start
+)
+lido_baseid(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventPlace.place.placeID,
+    gen_id
+)
+lido_basenameset(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventPlace.place.namePlaceSet,
+    gen_name
+)
+lido_term(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventMaterialsTech.materialsTech.termMaterialsTech,
+    gen_event,
+    -conceptid: gen_id
+)
+lido_descriptivenote(
+    descriptiveMetadata.eventWrap.eventSet.$last.event.eventDescriptionSet,
+    gen_desc
+)
+
+##
+# recordWrap
+lido_baseid(
+    administrativeMetadata.recordWrap.recordID,
+    gen_id
+)
+lido_term(
+    administrativeMetadata.recordWrap.recordType,
+    gen_name
+)
+lido_basenameset(
+    administrativeMetadata.recordWrap.recordSource.legalBodyName,
+    recordList.record.institution_name
+)
+
+##
+# resourceWrap
+lido_baseid(
+    administrativeMetadata.resourceWrap.resourceSet.resourceID,
+    gen_id
+)
+
+remove_field(recordList)
+remove_field(gen_cat)
+remove_field(gen_id)
+remove_field(gen_link)
+remove_field(gen_desc)
+remove_field(gen_int)
+remove_field(gen_name)
+remove_field(gen_event)
+
+vacuum()
