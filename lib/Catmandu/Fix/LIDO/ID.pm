@@ -24,7 +24,6 @@ sub emit_base_id {
 	my ($fixer, $root, $path, $id, $source, $label, $type) = @_;
 
 	my $new_path = $fixer->split_path($path);
-    push @$new_path, '$append';
     my $code = '';
 
 	my $f_id = $fixer->generate_var();
