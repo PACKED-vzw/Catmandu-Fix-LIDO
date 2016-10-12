@@ -6,7 +6,64 @@ use strict;
 
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(mk_value);
+our @EXPORT_OK = qw(mk_value mk_simple);
+
+sub mk_simple {
+    my ($fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string) = @_;
+
+    my $new_path = $fixer->split_path($path);
+    my $code = '';
+    my $f_val = $fixer->generate_var();
+
+    if (!defined($is_string)) {
+        $is_string = 0;
+    }
+
+    if ($is_string == 0) {
+        $code .= "my ${f_val};";
+        $code .= declare_source($fixer, $value, $f_val);
+    }
+
+    my $v_root = $fixer->var;
+    if (defined($root)) {
+        $v_root = $root;
+    }
+
+    $code .= $fixer->emit_create_path(
+        $v_root,
+        $new_path,
+        sub {
+            my $r_root = shift;
+            my $r_code = '';
+
+            $r_code .= "${r_root} = {";
+
+            if (defined($lang)) {
+                $r_code .= "'lang' => '".$lang."',";
+            }
+            if (defined ($pref)) {
+                $r_code .= "'pref' => '".$pref."',";
+            }
+            if (defined ($label)) {
+                $r_code .= "'label' => '".$label."',";
+            }
+            if (defined ($type)) {
+                $r_code .= "'type' => '".$type."',";
+            }
+            if ($is_string == 0) {
+                $r_code .= "'_' => ${f_val}";
+            } else {
+                $r_code .= "'_' => '".$value."'";
+            }
+
+            $r_code .= "};";
+
+            return $r_code;
+        }
+    );
+
+    return $code;
+}
 
 sub mk_value {
     my ($fixer, $root, $path, $value, $lang, $pref, $label, $type, $is_string) = @_;
