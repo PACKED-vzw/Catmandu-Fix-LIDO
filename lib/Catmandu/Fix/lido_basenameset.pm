@@ -49,10 +49,10 @@ Catmandu::Fix::lido_basenameset - Create a basic nameset in a C<path>
     lido_basenameset (
         path,
         value,
-        value_pref: appellationValue.pref,
-        value_lang: appellationValue.lang,
-        source: sourceAppellation,
-        source_lang: sourceAppellation.lang
+        -value_pref: appellationValue.pref,
+        -value_lang: appellationValue.lang,
+        -source: sourceAppellation,
+        -source_lang: sourceAppellation.lang
     )
 
 =head1 DESCRIPTION

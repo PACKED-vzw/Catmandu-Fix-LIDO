@@ -47,10 +47,10 @@ Catmandu::Fix::lido_basevalue - Create a basic XML node in a C<path>
     lido_basevalue(
         path,
         value,
-        pref: node.pref,
-        lang: node.lang,
-        label: node.label,
-        type: node.type
+        -pref: node.pref,
+        -lang: node.lang,
+        -label: node.label,
+        -type: node.type
     )
 
 =head1 DESCRIPTION

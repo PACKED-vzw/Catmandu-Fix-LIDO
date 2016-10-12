@@ -44,9 +44,9 @@ Catmandu::Fix::lido_baseid - Create a basic id component in a C<path>
 	lido_baseid(
 		path,
 		id_value,
-		type: ID.type,
-		source: ID.source,
-		label: ID.label
+		-type: ID.type,
+		-source: ID.source,
+		-label: ID.label
 	)
 
 =head1 DESCRIPTION

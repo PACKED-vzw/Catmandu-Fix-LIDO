@@ -76,13 +76,13 @@ Catmandu::Fix::lido_classification - create an C<objectClassificationWrap>.
     lido_classification(
         object_work_type,
         classification,
-        object_work_type_id: objectWorkType.conceptID,
-        classification_id: classification.conceptID,
-        object_work_type_type: objectWorkType.type,
-        object_work_type_source: objectWorkType.source,
-        classification_type: classification.type,
-        classification_source: classification_source,
-        lang: objectClassificationWrap.*.lang
+        -object_work_type_id: objectWorkType.conceptID,
+        -classification_id: classification.conceptID,
+        -object_work_type_type: objectWorkType.type,
+        -object_work_type_source: objectWorkType.source,
+        -classification_type: classification.type,
+        -classification_source: classification_source,
+        -lang: objectClassificationWrap.*.lang
     )
 
 =head1 DESCRIPTION

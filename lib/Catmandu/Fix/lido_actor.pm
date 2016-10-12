@@ -119,16 +119,16 @@ Catmandu::Fix::lido_actor - create a LIDO actorInRole node at a specified path
         path,
         id,
         name,
-        id_label: actorID.label,
-        id_source: actorID.source,
-        nationality: nationalityActor,
-        birthdate: vitalDatesActor.earliestDate,
-        deathdate: vitalDatesActor.latestDate,
-        role: roleActor.term,
-        role_id: roleActor.conceptID,
-        role_id_type: roleActor.conceptID.type,
-        role_id_source: roleActor.conceptID.source,
-        qualifier: attributionQualifierActor
+        -id_label: actorID.label,
+        -id_source: actorID.source,
+        -nationality: nationalityActor,
+        -birthdate: vitalDatesActor.earliestDate,
+        -deathdate: vitalDatesActor.latestDate,
+        -role: roleActor.term,
+        -role_id: roleActor.conceptID,
+        -role_id_type: roleActor.conceptID.type,
+        -role_id_source: roleActor.conceptID.source,
+        -qualifier: attributionQualifierActor
     )
 
 =head1 DESCRIPTION
