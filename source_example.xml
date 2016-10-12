@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adlibXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://www.adlibsoft.com/adlibXML.xsd">
+    <recordList>
+<record>
+    <priref>4207</priref>
+    <institution_name>Museum voor Schone Kunsten Gent</institution_name>
+    <priref>4207</priref>
+    <object_number>1812-A</object_number>
+    <title>Naderend onweer (chain)</title>
+    <creator>Jonghe, Jan Baptiste De</creator>
+    <production_date_start>1812</production_date_start>
+    <production_date_start_prec>circa</production_date_start_prec>
+    <object_name>olieverfschilderij</object_name>
+    <publish_on_web>x</publish_on_web>
+</record>
+    </recordList>
+    <diagnostic>  
+        <xmltype></xmltype>
+        <hits>0</hits>
+        <search></search>
+        <sort></sort>
+        <limit>0</limit>
+        <hits_on_display>0</hits_on_display>
+        <first_item>0</first_item>
+        <backward></backward>
+        <forward></forward>
+        <databasepath></databasepath>
+        <dbname></dbname>
+        <dsname></dsname>
+        <language>0</language>
+        <epoch>0</epoch>
+    </diagnostic>
+</adlibXML>
