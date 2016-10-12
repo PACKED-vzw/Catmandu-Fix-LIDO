@@ -91,3 +91,82 @@ sub emit {
 }
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::lido_objectmeasurements - Create a C<objectMeasurements> node
+
+=head1 SYNOPSIS
+
+has extent => (fix_arg => 1); # should this be a path?
+has type => (fix_arg => 1);
+has unit => (fix_arg => 1);
+has value => (fix_arg => 1); # path
+    lido_objectmeasurements(
+        extent,
+        type,
+        unit,
+        value
+    )
+
+=head1 DESCRIPTION
+
+Create a C<objectMeasurements> node, consisting of C<measurementType>, C<measurementUnit>, C<measurementValue> and C<extentMeasurements>.
+
+=head2 Parameters
+
+=head3 Required parameters
+
+All parameters are required.
+
+C<value> is a path parameter, all other parameters are strings.
+
+=over
+
+=item C<value>
+
+=back
+
+=over
+
+=item C<extent>
+
+=item C<type>
+
+=item C<unit>
+
+=back
+
+=head1 EXAMPLE
+
+=head2 Fix
+
+    lido_objectmeasurements(
+        'hoogte',
+        'hoogte',
+        'cm',
+        recordList.record.height
+    )
+
+=head2 Result
+
+    <lido:descriptiveMetadata>
+        <lido:objectIdentificationWrap>
+            <lido:objectMeasurementsWrap>
+                <lido:objectMeasurementsSet>
+                    <lido:objectMeasurements>
+                        <lido:measurementsSet>
+                            <lido:measurementType>hoogte</lido:measurementType>
+                            <lido:measurementUnit>cm</lido:measurementUnit>
+                            <lido:measurementValue>15</lido:measurementValue>
+                        </lido:measurementsSet>
+                        <lido:extentMeasurements>hoogte</lido:extentMeasurements>
+                    </lido:objectMeasurements>
+                </lido:objectMeasurementsSet>
+            </lido:objectMeasurementsWrap>
+        </lido:objectIdentificationWrap>
+    </lido:descriptiveMetadata>
