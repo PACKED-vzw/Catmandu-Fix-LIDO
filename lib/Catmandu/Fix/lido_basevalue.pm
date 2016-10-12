@@ -32,5 +32,78 @@ sub emit {
     return $perl;
 }
 
-
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Catmandu::Fix::lido_basevalue - Create a basic XML node in a C<path>
+
+=head1 SYNOPSIS
+
+    lido_basevalue(
+        path,
+        value,
+        pref: node.pref,
+        lang: node.lang,
+        label: node.label,
+        type: node.type
+    )
+
+=head1 DESCRIPTION
+
+Creates a basic XML node in a specified C<path>. This fix can be used in places where a simple node is expected, but where the parent can have multiple nodes of this type. It can't be used for non-repeatable items.
+
+=head2 Parameters
+
+=head3 Required parameters
+
+C<path> and C<value> are required paths.
+
+=over
+
+=item C<path>
+
+=item C<value>
+
+=back
+
+=head3 Optional parameters
+
+All optional parameters are strings.
+
+=over
+
+=item C<pref>
+
+=item C<lang>
+
+=item C<label>
+
+=item C<type>
+
+=back
+
+=head1 EXAMPLE
+
+=head2 Fix
+
+    lido_basevalue(
+        descriptiveMetadata.objectRelationWrap.subjectWrap.subjectSet.displaySubject,
+        recordList.record.object_name
+    )
+
+=head2 Result
+
+    <lido:descriptiveMetadata>
+        <lido:objectRelationWrap>
+            <lido:subjectWrap>
+                <lido:subjectSet>
+                    <lido:displaySubject>olieverfschilderij</lido:displaySubject>
+                </lido:subjectSet>
+            </lido:subjectWrap>
+        </lido:objectRelationWrap>
+    </lido:descriptiveMetadata>
