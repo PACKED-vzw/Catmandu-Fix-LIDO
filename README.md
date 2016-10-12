@@ -10,126 +10,189 @@ These fixes generate a data structure that can be exported to XML using the Catm
 
 # MODULES
 
-- [Catmandu::Fix::lido\_description](https://metacpan.org/pod/Catmandu::Fix::lido_description)
-- [Catmandu::Fix::lido\_event](https://metacpan.org/pod/Catmandu::Fix::lido_event)
-- [Catmandu::Fix::lido\_recid](https://metacpan.org/pod/Catmandu::Fix::lido_recid)
-- [Catmandu::Fix::lido\_recordwrap](https://metacpan.org/pod/Catmandu::Fix::lido_recordwrap)
-- [Catmandu::Fix::lido\_repository](https://metacpan.org/pod/Catmandu::Fix::lido_repository)
-- [Catmandu::Fix::lido\_title](https://metacpan.org/pod/Catmandu::Fix::lido_title)
-- [Catmandu::Fix::lido\_worktype](https://metacpan.org/pod/Catmandu::Fix::lido_worktype)
+- [Catmandu::Fix::lido\_baseid](https://metacpan.org/pod/Catmandu::Fix::lido_baseid)
+- [Catmandu::Fix::lido\_basenameset](https://metacpan.org/pod/Catmandu::Fix::lido_basenameset)
+- [Catmandu::Fix::lido\_basevalue](https://metacpan.org/pod/Catmandu::Fix::lido_basevalue)
+- [Catmandu::Fix::lido\_term](https://metacpan.org/pod/Catmandu::Fix::lido_term)
+- [Catmandu::Fix::lido\_date](https://metacpan.org/pod/Catmandu::Fix::lido_date)
+- [Catmandu::Fix::lido\_descriptivenote](https://metacpan.org/pod/Catmandu::Fix::lido_descriptivenote)
+
+- [Catmandu::Fix::lido\_classification](https://metacpan.org/pod/Catmandu::Fix::lido_classification)
+- [Catmandu::Fix::lido\_inscription](https://metacpan.org/pod/Catmandu::Fix::lido_inscription)
+- [Catmandu::Fix::lido\_objectmeasurements](https://metacpan.org/pod/Catmandu::Fix::lido_objectmeasurements)
+- [Catmandu::Fix::lido\_actor](https://metacpan.org/pod/Catmandu::Fix::lido_actor)
 
 # DESCRIPTION
 
-A set of [fixes](http://librecat.org/Catmandu/#fixes-cheat-sheet) for the [Catmandu project](http://librecat.org/) to convert data to the [LIDO XML](http://lido-schema.org/) format.
+A set of [fixes](http://librecat.org/Catmandu/#fixes-cheat-sheet) for the [Catmandu project](http://librecat.org/) to convert data to the [LIDO XML](http://lido-schema.org/) format. The output is usable as input to the [Catmandu LIDO exporter](https://github.com/LibreCat/Catmandu-LIDO).
 
-These fixes generate a data structure that can be exported to XML using the [Catmandu LIDO exporter](https://github.com/LibreCat/Catmandu-LIDO).
+The fixes consist of two types: six building block fixes, that create generic LIDO-compatible elements at a given position (path) in the result, and four specific fixes that create blocks of LIDO at a predefined location.
 
-## Supported LIDO elements
+It is possible to use only the six block fixes to generate an entire, valid, LIDO record, but for ease of use the four specific fixes have been provided to lighten the load in your `.fix` file.
 
-The required elements of the [CIDOC-CRM](https://www.projectcest.be/wiki/Standaard:CIDOC-richtlijnen) standard (minimal requirements) and the minimal requirements to get a valid LIDO XML record are supported. More elements may be added later.
+To use the block fixes, you must provide the path where they must appear. Familiarity with the LIDO standard is thus required.
 
-All elements can be repeated.
+Note that all parameters prefixed by `-` are optional.
 
-### Institution name
+## Block fixes
 
-* _descriptiveMetadata.objectIdentificationWrap.repositoryWrap.repositoryName.legalBodyName.appellationValue_
-* _descriptiveMetadata.objectIdentificationWrap.repositoryWrap.workID_
+### `lido_baseid`
 
-As `lido_repository(legalBodyName, workID, lang: en, pref: preferred)` where `legalBodyName` and `workID` are paths and required and `lang` and `pref` are optional strings (default: `en` and `preferred`).
-
-### Inventory number
-
-* _lidoRecID_
-
-As `lido_recid(lidoRecID, type)` where `lidoRecID` is a required path and `type` a required string..
-
-This element is required.
-
-### Object keyword
-
-* _descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.term_
-* _descriptiveMetadata.objectClassificationWrap.objectWorkTypeWrap.objectWorkType.conceptID_
-
-As `lido_worktype(workType, conceptid: conceptID, lang: en, source: AAT, pref: preferred)` where `workType` is a required path, `conceptid` an optional path and `lang`, `source` and `pref` are optional strings (default: `en`, `AAT` and `preferred`).
-
-### Title
-
-* _descriptiveMetadata.objectIdentificationWrap.titleWrap.titleSet.appellationValue_
-* _descriptiveMetadata.objectIdentificationWrap.titleWrap.titleSet.sourceAppellation_
-
-As `lido_title(appellationValue, sourceAppellation, lang: en, pref: preferred)` where `appellationValue` and `sourceAppellation` are required paths and `lang` and `pref` are optional strings (default: `en` and `preferred`).
-
-This element is required.
-
-### Brief description
-
-* _descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue_
-
-As `lido_description(description, lang: en)` where `description` is a required path and `lang` an optional string( default: `en`).
-
-### Events
-
-The _acquisition method_, _acquired from_ and _acquisition date_ elements from the CIDOC-CRM guidelines are modelled as events.
-
-* _descriptiveMetadata.eventWrap.eventSet.event.eventActor.actorInRole.nameActorSet.appellationValue_
-* _descriptiveMetadata.eventWrap.eventSet.event.eventActor.actorInRole.actor.actorID_
-* _descriptiveMetadata.eventWrap.eventSet.event.eventActor.actorInRole.roleActor.term_
-* _descriptiveMetadata.eventWrap.eventSet.event.eventDate.displayDate_
-* _descriptiveMetadata.eventWrap.eventSet.event.eventDate.date.earliestDate_ &  _descriptiveMetadata.eventWrap.eventSet.event.eventDate.date.latestDate_ (from a single source; both elements are equal)
-*  _descriptiveMetadata.eventWrap.eventSet.event.eventID_
-*  _descriptiveMetadata.eventWrap.eventSet.event.eventName.appellationValue_
-*  _descriptiveMetadata.eventWrap.eventSet.event.eventType.term_
-
-To create an event, you have to wrap the `lido_event()`-fix inside a `lido_event_bind()`, which creates the path to a (new) event. The `lido_event()` and other fixes you execute inside the bind can use `event` as the root path to ceate the event. The bind will move this path to the correct LIDO path.
-
-As `lido_event()` inside `lido_event_bind()`:
->
+Will generate all components for a valid ID-type node in a path. You must provide the parent of the ID-type node as part of the path.
 
 ```
-do lido_event_bind()
-    lido_event(
-        type,
-        lang: en,
-        id: eventID,
-        name: eventName,
-        actor_name: nameActorSet.appellationValue,
-        actor_role: roleActor.term,
-        actor_id: actorID,
-        date_display: displayDate,
-        date_iso: date.earliestDate
+	lido_baseid(
+        path, # The path where the component will appear (includes the parent).
+		id_value, # The value of the ID, as a path.
+		-type: ID.type, # String.
+		-source: ID.source, # String.
+		-label: ID.label # String.
+	)
+```
+
+
+### `lido_basenameset`
+
+Will generate all components for a `appellationValue`-`sourceAppellation` pair in a path. The parent of the node pair (e.g. `titleSet`) must be provided as part of the path.
+
+```
+    lido_basenameset (
+        path, # The path where the component will appear (includes the parent).
+        value, # Value of appellationValue, as path.
+        -value_pref: appellationValue.pref, # String.
+        -value_lang: appellationValue.lang, # String.
+        -source: sourceAppellation, # Value of sourceAppellation, as path.
+        -source_lang: sourceAppellation.lang # String.
     )
-end
-
 ```
 
-Where `type` is a required path, `id`, `name`, `actor_name`, `actor_id` & `date_display` are optional paths and `lang`, `actor_role` & `date_iso` are optional strings. The default value for `lang` is `en`. Note that `date_iso` is not validated.
+### `lido_basevalue`
 
-`actor_name` or `actor_id` are required when `actor_role` is set.
-
-### Record
-
-This element implements `permanent location` from CIDOC-CRM.
-
-* _administrativeMetadata.recordWrap.recordID_
-* _administrativeMetadata.recordWrap.recordType.term_
-* _administrativeMetadata.recordWrap.recordSource.legalBodyName.appellationValue_
-
-As `lido_recordwrap()`:
->
+Will generate all components for a simple parent => value node in a path. The parent part must be provided as part of the path.
 
 ```
-lido_recordwrap(
-    recordID,
-    recordID_type,
-    recordType,
-    recordSource,
-    lang: en
-)
+    lido_basevalue(
+        path, # The path where the component will appear (includes the parent).
+        value, # Value, as path.
+        -pref: node.pref, # String.
+        -lang: node.lang, # String.
+        -label: node.label, # String.
+        -type: node.type # String.
+    )
 ```
 
-Where `recordID`, `recordType` and `recordSource` are required paths, `recordID_type` is a required string and `lang` is an optional string (default: `en`).
+### `lido_term`
 
-This element is required.
+Will generate all components for a `term`-`conceptID` pair in a path. The parent of the node pair (e.g. `category`) must be provided as part of the path.
+
+```
+    lido_term(
+        path, # The path where the components will appear (includes the parent).
+        term, # The value of the term component, as path.
+        -conceptid: conceptID, # The value of the conceptID component, as path.
+        -lang: term.lang, # String
+        -pref: term.pref, # String
+        -source: conceptID.source, # String
+        -type: conceptID.type # String
+    )
+```
+
+### `lido_date`
+
+Will create a `earliestDate`-`latestDate` pair in a path. The parent of the pair must be provided as part of the path.
+
+```
+    lido_date(
+        path, # The path where the components will appear (includes the parent).
+        -earliest_date: earliestDate, # Value of earliestDate, as path.
+        -latest_date: latestDate # Value of latestDate, as path.
+    )
+```
+
+### `lido_descriptivenote`
+
+Create a `descriptiveNoteValue` node in a path. Include the parent in the path, but not `descriptiveNoteValue`; this will be generated by this fix.
+
+```
+    lido_descriptivenote(
+        path, # The path where the component will appear.
+        value, # Value, as path.
+        -lang: descriptiveNoteValue.lang, # String.
+        -label: descriptiveNoteValue.label # String.
+    )
+```
+
+## Specific fixes
+
+It is possible to create the nodes these fixes generate by using only the blocks above. However, for basic use cases, the fixes below will be easier. These fixes will also automatically put their nodes in the correct paths.
+
+### `lido_classification`
+
+Generate the `objectClassificationWrap` containing the `classification` and `objectWorkType` nodes.
+
+```
+    lido_classification(
+        object_work_type, # objectWorkType.term, as path.
+        classification, # classification.term, as path.
+        -object_work_type_id: objectWorkType.conceptID, # As path.
+        -classification_id: classification.conceptID, # As path.
+        -object_work_type_type: objectWorkType.type, # String.
+        -object_work_type_source: objectWorkType.source, # String.
+        -classification_type: classification.type, # String.
+        -classification_source: classification_source, # String.
+        -lang: objectClassificationWrap.*.lang # String.
+    )
+```
+
+### `lido_inscription`
+
+Generate a `inscriptions` block at `descriptiveMetadata.objectIdentificationWrap.inscriptionsWrap`. Provides the `inscriptionTranscription` and `descriptiveNoteValue` nodes.
+
+```
+    lido_inscription(
+        -transcription: inscriptionTranscription, # As path.
+        -descriptive_note: inscriptionDescription, # As path.
+        -type: inscriptionTranscription.type, # String.
+        -label: inscriptionTranscription.label & descriptiveNote.label, # String.
+        -lang: inscriptionDescription.lang & inscriptionTranscription.lang # String.
+    )
+```
+
+### `lido_objectmeasurements`
+
+Create an `objectMeasurements` in `descriptiveMetadata.objectIdentificationWrap.objectMeasurementsWrap.objectMeasurementsSet`. Provides `extentMeasurements`, `measurementType`, `measurementUnit` and `measurementValue`.
+
+```
+    lido_objectmeasurements(
+        extent, # String.
+        type, # String.
+        unit, # String.
+        value # Path.
+    )
+```
+
+### `lido_actor`
+
+Create a `actorInRole` node. You must provide the path where it has to appear (e.g. `eventWrap.eventSet.event`), as it has multiple possible positions. Provides `actorID`, `nameActorSet`, `nationalityActor`, `vitalDatesActor`, `roleActor` and `attributionQualifierActor`.
+
+```
+    lido_actor(
+        path, # Path where the node must be generated. Do not include actorInRole as part of the path.
+        id, # actorID, as path.
+        name, # nameActorSet, as path.
+        -id_label: actorID.label, # String.
+        -id_source: actorID.source, # String.
+        -nationality: nationalityActor, # As path.
+        -birthdate: vitalDatesActor.earliestDate, # As path.
+        -deathdate: vitalDatesActor.latestDate, # As path.
+        -role: roleActor.term, # As path.
+        -role_id: roleActor.conceptID, # As path.
+        -role_id_type: roleActor.conceptID.type, # String.
+        -role_id_source: roleActor.conceptID.source, # String.
+        -qualifier: attributionQualifierActor # As path.
+    )
+```
+
 
 # SEE ALSO
 
