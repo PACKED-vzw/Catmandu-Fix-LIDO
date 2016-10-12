@@ -102,10 +102,6 @@ Catmandu::Fix::lido_objectmeasurements - Create a C<objectMeasurements> node
 
 =head1 SYNOPSIS
 
-has extent => (fix_arg => 1); # should this be a path?
-has type => (fix_arg => 1);
-has unit => (fix_arg => 1);
-has value => (fix_arg => 1); # path
     lido_objectmeasurements(
         extent,
         type,

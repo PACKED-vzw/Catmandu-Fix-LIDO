@@ -164,6 +164,8 @@ The following parameters are optional, but must be paths:
 
 =item C<role>
 
+=item C<role_id>
+
 =item C<qualifier>
 
 =back
@@ -175,8 +177,6 @@ All other optional parameters are strings:
 =item C<id_label>
 
 =item C<id_source>
-
-=item C<role_id>
 
 =item C<role_id_type>
 
