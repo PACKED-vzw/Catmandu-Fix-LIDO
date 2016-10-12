@@ -37,8 +37,64 @@ __END__
 
 =head1 NAME
 
-Catmandu::Fix::lido_recid - Create a Lido lidoRecID
+Catmandu::Fix::lido_baseid - Create a basic id component in a C<path>
 
 =head1 SYNOPSIS
 
-lido_recid(lidoRecID, type)
+	lido_baseid(
+		path,
+		id_value,
+		type: ID.type,
+		source: ID.source,
+		label: ID.label
+	)
+
+=head1 DESCRIPTION
+
+This component will assist in the creation of generic LIDO ID nodes, of the form C<<lido:ID attributes>value</lido:ID>>.
+
+The nodes will be created in the path provided by C<path>.
+
+=head2 Parameters
+
+=head3 Required parameters
+
+The parameters C<path> and C<id_value> are mandatory paths.
+
+=over
+
+=item C<path>
+
+=item C<id_value>
+
+=back
+
+=head3 Optional parameters
+
+All optional parametes are strings.
+
+=over
+
+=item C<type>
+
+=item C<source>
+
+=item C<label>
+
+=back
+
+=head1 EXAMPLE
+
+=head2 Fix
+
+	lido_baseid(
+		lidoRecID,
+		recordList.record.object_number,
+		-source: 'Museum voor Schone Kunsten Gent',
+		-type: 'global',
+		-label: 'dataPID'
+	)
+
+=head2 Result
+
+	<lido:lidoRecID lido:type="global" lido:source="Museum voor Schone Kunsten Gent" lido:label="dataPID">1812-A</lido:lidoRecID>

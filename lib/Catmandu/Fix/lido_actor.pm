@@ -131,10 +131,26 @@ Catmandu::Fix::lido_actor - create a LIDO actorInRole node at a specified path
         qualifier: attributionQualifierActor
     )
 
-=head1 Description
+=head1 DESCRIPTION
 C<lido_actor()> will create an actorInRole node in the path specified by the C<path> parameter.
 
+=head2 Parameters
+
+=head3 Required parameters
+
 It requires the parameters C<path>, C<id> and C<name> to be present as paths.
+
+=over
+
+=item C<path>
+
+=item C<id>
+
+=item C<name>
+
+=back
+
+=head3 Optional parameters
 
 The following parameters are optional, but must be paths:
 
@@ -168,7 +184,7 @@ All other optional parameters are strings:
 
 =back
 
-=head1 Example
+=head1 EXAMPLE
 
 =head2 Fix
 
