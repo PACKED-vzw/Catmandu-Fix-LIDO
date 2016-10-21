@@ -1,6 +1,6 @@
 package Catmandu::Fix::LIDO::Term;
 
-use Catmandu::Fix::LIDO::Utility qw(walk declare_source);
+use Catmandu::Fix::LIDO::Utility qw(walk declare_source split_path);
 
 use strict;
 
@@ -33,7 +33,7 @@ sub emit_term {
 
     my $code = '';
 
-    my $new_path = $fixer->split_path($path);
+    my $new_path = split_path($path);
     ##
     # term
     my $f_term = $fixer->generate_var();

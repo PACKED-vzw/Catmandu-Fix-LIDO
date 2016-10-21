@@ -28,7 +28,7 @@ lido_baseid(
 
 lido_term(
     category,
-    gen_cat,
+    'recordList.record.my\.first\.name',
     -conceptid: gen_id,
     -type: global,
     -source: 'cidoc-crm',
