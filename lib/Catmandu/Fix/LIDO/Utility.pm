@@ -13,32 +13,44 @@ our @EXPORT_OK = qw(walk declare_source split_path);
 # $fixer->split_path with local fixes
 # Loosely adapted from the example in the C Programming Language
 sub split_path {
-	my ($path) = @_;
-	# split on . or /, but not on \. or \/
-	my @chars = split(//, trim($path));
-	my @splitted;
-	my @component;
-	foreach my $char (@chars) {
-		if ($char eq '.' || $char eq '/') {
-			my $previous_char = pop(@component);
-			# Check for the previous string; if it is '\', append to @component and remove '\'
-			if ($previous_char eq '\\') {
-				push(@component, $char);
-			} else {
-				# Else, join @component and add it to splitted
-				push(@component, $previous_char);
-				push(@splitted, join('', @component));
-				@component = ();
-			}
-		} else {
-			push(@component, $char);
-		}
-	}
-	# Add the joined last @component if it isn't empty
-	if ($#component != 0) {
-		push (@splitted, join('', @component));
-	}
-	return \@splitted;
+    my ($path) = @_;
+    
+    my @splitted_path;
+    my @component;
+
+    my @chars = split(//, trim($path));
+
+    foreach my $char (@chars) {
+        if ($char eq '.' || $char eq '/') {
+            my $previous = pop(@component);
+
+            # If $previous equals \, do not split on $char and append
+            # $char to @component. It is a part of the path key, not the path.
+            # $previous is thrown away if it is \, as it is nowhere in the
+            # original path.
+            if (defined($previous)) {
+                if ($previous eq '\\') {
+                    push(@component, $char);
+                } else {
+                    # Perform the split action
+                    push(@component, $previous);
+                    push(@splitted_path, join('', @component));
+                    # Empty @component
+                    @component = ();
+                }
+            }
+        } else {
+            # It is not a split char, so add to @component
+            push(@component, $char);
+        }
+    }
+
+    # Add the last @component (between the last ./ and the end of the string)
+    if (scalar @component != 0) {
+        push(@splitted_path, join('', @component));
+    }
+
+return \@splitted_path;
 }
 
 

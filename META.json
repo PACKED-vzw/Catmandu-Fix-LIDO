@@ -37,6 +37,8 @@
       },
       "runtime" : {
          "requires" : {
+            "Data::Dumper": "2.161",
+            "String::Util" : "1.26",
             "Catmandu" : "1.0201",
             "Catmandu::XML" : "0.16",
             "Moo" : "1.0",
@@ -52,13 +54,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/netsensei/Catmandu-Fix-LIDO/issues"
+         "web" : "https://github.com/PACKED-vzw/Catmandu-Fix-LIDO/issues"
       },
-      "homepage" : "https://github.com/netsensei/Catmandu-Fix-LIDO",
+      "homepage" : "https://github.com/PACKED-vzw/Catmandu-Fix-LIDO",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/netsensei/Catmandu-Fix-LIDO.git",
-         "web" : "https://github.com/netsensei/Catmandu-Fix-LIDO"
+         "url" : "https://github.com/PACKED-vzw/Catmandu-Fix-LIDO.git",
+         "web" : "https://github.com/PACKED-vzw/Catmandu-Fix-LIDO"
       }
    },
    "version" : "0.001",
