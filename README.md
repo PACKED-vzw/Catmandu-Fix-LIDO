@@ -2,6 +2,8 @@
 
 Catmandu::Fix::LIDO - Implement LIDO fixes
 
+*This repository is no longer maintained. See [https://github.com/LibreCat/Catmandu-LIDO](https://github.com/LibreCat/Catmandu-LIDO) for the latest version of this module.*
+
 # SYNOPSIS
 
 A set of fixes for the Catmandu project to convert data to the LIDO XML format.
